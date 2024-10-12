@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import healthLogo from '../../Image/health.png'; // Replace with your logo paths
 import carLogo from '../../Image/car.png';
 import lifeLogo from '../../Image/life.png';
@@ -10,13 +11,13 @@ import claimImage from '../../Image/claim.png'; // Replace with your claim image
 
 function Home() {
   const insuranceTypes = [
-    { name: 'Health Insurance', logo: healthLogo },
-    { name: 'Car Insurance', logo: carLogo },
-    { name: 'Life Insurance', logo: lifeLogo },
-    { name: 'Term Insurance', logo: termLogo },
-    { name: 'Bike Insurance', logo: bikeLogo },
-    { name: 'Business Insurance', logo: businessLogo },
-    { name: 'Travel Insurance', logo: travelLogo },
+    { name: 'Health Insurance', logo: healthLogo, path: '/health-insurance' },
+    { name: 'Car Insurance', logo: carLogo, path: '/car-insurance' },
+    { name: 'Life Insurance', logo: lifeLogo, path: '/life-insurance' },
+    { name: 'Term Insurance', logo: termLogo, path: '/term-insurance' },
+    { name: 'Bike Insurance', logo: bikeLogo, path: '/bike-insurance' },
+    { name: 'Business Insurance', logo: businessLogo, path: '/business-insurance' },
+    { name: 'Travel Insurance', logo: travelLogo, path: '/travel-insurance' },
     // Add more insurance types as needed
   ];
 
@@ -26,21 +27,23 @@ function Home() {
         <h2 className="text-2xl font-semibold mb-4 text-center">Available Insurance Options</h2>
         <div className="grid grid-cols-2 gap-4">
           {insuranceTypes.map((insurance, index) => (
-            <div key={index} className="flex items-center bg-gray-50 rounded-lg p-4 shadow-md">
+            <NavLink
+              key={index}
+              to={insurance.path}
+              className="flex items-center bg-gray-50 rounded-lg p-4 shadow-md hover:bg-gray-100 transition duration-200"
+            >
               <img src={insurance.logo} alt={`${insurance.name} Logo`} className="h-12 w-12 mr-4" />
               <span className="text-lg font-medium text-gray-700">{insurance.name}</span>
-            </div>
+            </NavLink>
           ))}
         </div>
       </div>
 
       {/* Claim Served Section with Image on Left and Text on Right */}
       <div className="bg-white shadow-lg rounded-lg p-6 max-w-4xl w-full mb-8 flex items-center justify-center">
-        {/* Image on the Left */}
         <div className="flex-shrink-0 mr-4">
           <img src={claimImage} alt="Claim Served" className="h-32 w-32" />
         </div>
-        {/* Content on the Right */}
         <div className="text-gray-700 text-center">
           <h2 className="text-xl font-semibold mb-4">50K+ Claim Served</h2>
           <p>We ensure quick and hassle-free claim settlement</p>
@@ -50,7 +53,6 @@ function Home() {
 
       {/* Why Insurance Wala Section */}
       <div className="flex flex-col md:flex-row justify-center items-start min-h-screen bg-gray-100 p-4 md:p-8">
-      
         {/* Left Section: Why Insurance Wala */}
         <div className="w-full md:w-1/3 bg-white shadow-lg rounded-lg p-6 mb-8 md:mb-0 md:mr-8">
           <h2 className="text-2xl font-semibold mb-4">Why Insurance Wala?</h2>

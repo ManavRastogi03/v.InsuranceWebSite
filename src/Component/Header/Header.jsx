@@ -3,7 +3,6 @@ import { Link, NavLink } from 'react-router-dom';
 import logo from "../../Image/I.png";
 
 export default function Header() {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isInsuranceOpen, setIsInsuranceOpen] = useState(false);
     const [isHealthInsuranceOpen, setIsHealthInsuranceOpen] = useState(false);
     const [isAdvisoryOpen, setIsAdvisoryOpen] = useState(false); // New state for Insurance Advisory
@@ -102,12 +101,24 @@ export default function Header() {
                                                 </div>
                                             )}
                                         </li>
-                                        <li className="py-1 hover:bg-gray-100">Car Insurance</li>
-                                        <li className="py-1 hover:bg-gray-100">Life Insurance</li>
-                                        <li className="py-1 hover:bg-gray-100">Term Insurance</li>
-                                        <li className="py-1 hover:bg-gray-100">Bike Insurance</li>
-                                        <li className="py-1 hover:bg-gray-100">Business Insurance</li>
-                                        <li className="py-1 hover:bg-gray-100">Travel Insurance</li>
+                                        <li  className="py-1 hover:bg-gray-100">
+                                            <NavLink to='/car-insurance' >Car Insurance</NavLink>
+                                        </li>
+                                        <li className="py-1 hover:bg-gray-100">
+                                            <NavLink to='/life-insurance'>Life Insurance</NavLink>
+                                        </li>
+                                        <li className="py-1 hover:bg-gray-100">
+                                            <NavLink to='/term-insurance'>Term Insurance</NavLink>
+                                        </li>
+                                        <li className="py-1 hover:bg-gray-100">
+                                            <NavLink to='/bike-insurance'>Bike Insurance</NavLink>
+                                        </li>
+                                        <li className="py-1 hover:bg-gray-100">
+                                            <NavLink to='/business-insurance'>Business Insurance</NavLink>
+                                        </li>
+                                        <li className="py-1 hover:bg-gray-100">
+                                            <NavLink to='travel-insurance'>Travel Insurance</NavLink>
+                                        </li>
                                     </ul>
                                 </div>
                             )}
