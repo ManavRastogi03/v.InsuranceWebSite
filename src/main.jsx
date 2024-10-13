@@ -10,6 +10,7 @@ import TravelInsurnce from './Component/TravelInsurance/TravelInsurnce.jsx'
 import BusinessInsurance from './Component/BusinessInsurance/BusinessInsurance.jsx'
 import BikeInsurance from './Component/BikeInsurance/BikeInsurance.jsx'
 import TermInsurance from './Component/TermInsurance/TermInsurance.jsx'
+import LoginPage from './Component/Login/Login.jsx'
 // import Resetpassword from './components/ResetPassword/Resetpassword.jsx'
 const router=createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +22,7 @@ const router=createBrowserRouter(
       <Route path='/bike-insurance' element={<BikeInsurance/>}/>
       <Route path='/term-insurance' element={<TermInsurance/>}/>
       <Route path='/business-insurance' element={<BusinessInsurance/>}/>
+      <Route path='/login' element={<LoginPage/>}/>
 
       {/* <Route path="/resetpassword" element={<Resetpassword/>}/> */}
     </Route> 
