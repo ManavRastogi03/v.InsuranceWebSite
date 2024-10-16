@@ -11,7 +11,7 @@ import claimImage from '../../Image/claim.png'; // Replace with your claim image
 
 function Home() {
   const insuranceTypes = [
-    { name: 'Health Insurance', logo: healthLogo, path: '/health-insurance' },
+    { name: 'Health Insurance', logo: healthLogo, path: '/health-insurance/family' },
     { name: 'Car Insurance', logo: carLogo, path: '/car-insurance' },
     { name: 'Life Insurance', logo: lifeLogo, path: '/life-insurance' },
     { name: 'Term Insurance', logo: termLogo, path: '/term-insurance' },

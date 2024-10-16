@@ -38,7 +38,7 @@ function CarInsurancecal() {
         {/* Check Premium Button */}
         <button
           onClick={handleCheckPremium}
-          className="w-full bg-green-500 text-white p-3 rounded-lg font-semibold mb-4"
+          className="w-full bg-green-800 hover:bg-green-500 text-white p-3 rounded-lg font-semibold mb-4"
         >
           Check Premium
         </button>
@@ -49,7 +49,7 @@ function CarInsurancecal() {
         {/* Proceed Without Bike Number Button */}
         <button
           onClick={handleProceedWithoutNumber}
-          className="w-full flex items-center justify-center bg-transparent text-green-500 border border-green-500 p-3 rounded-lg font-semibold mb-4"
+          className="w-full flex items-center justify-center bg-transparent text-green-500 border bg-green-500 hover:bg-green-300 p-3 rounded-lg font-semibold mb-4"
         >
           Proceed without Car number
           <svg

@@ -24,7 +24,8 @@ const router=createBrowserRouter(
       <Route path='/term-insurance' element={<TermInsurance/>}/>
       <Route path='/business-insurance' element={<BusinessInsurance/>}/>
       <Route path='/login' element={<LoginPage/>}/>
-      <Route path='/health-insurance' element={<Healthinsurance/>}/>
+      {/* <Route path='/health-insurance' element={<Healthinsurance/>}/> */}
+      <Route path="/health-insurance/:type" element={<Healthinsurance />} />
       {/* <Route path="/resetpassword" element={<Resetpassword/>}/> */}
     </Route> 
   )

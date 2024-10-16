@@ -39,7 +39,7 @@ function BikeInsuranceCalculator() {
         {/* Check Premium Button */}
         <button
           onClick={handleCheckPremium}
-          className="w-full bg-green-500 text-white p-3 rounded-lg font-semibold mb-4"
+          className="w-full bg-green-700 hover:bg-green-400 text-white p-3 rounded-lg font-semibold mb-4"
         >
           Check Premium
         </button>

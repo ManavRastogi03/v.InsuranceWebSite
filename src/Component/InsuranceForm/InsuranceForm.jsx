@@ -110,7 +110,7 @@ function InsuranceForm() {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition duration-200"
+          className="w-full bg-green-800 text-white font-semibold py-3 rounded-lg hover:bg-green-400 transition duration-200"
         >
           Check Your Premium Now
         </button>
