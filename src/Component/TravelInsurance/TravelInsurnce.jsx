@@ -1,5 +1,5 @@
 import React from 'react';
-import InsuranceForm from '../InsuranceForm.jsx/InsuranceForm';
+import InsuranceForm from '../InsuranceForm/InsuranceForm.jsx';
 import travelInsuranceImage from '../../Image/Travelinsurance.png'; // Replace with your actual image path
 
 function TravelInsurance() {
