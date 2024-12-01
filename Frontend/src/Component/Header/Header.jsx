@@ -158,7 +158,7 @@ export default function Header() {
                             Log in
                         </Link>
                         <Link
-                            to="#"
+                            to="/Signup"
                             className="text-white bg-green-300 hover:bg-green-400 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
                         >
                             Get started
