@@ -1,11 +1,9 @@
 import jwt from "jsonwebtoken";
-import redisClient from "../config/redisClient.js"; // Import Redis Client
+import redisClient from "../config/redisClient.js"; 
 
-const authMiddleware = async (req, res, next) => {
+const authenticateUser = async (req, res, next) => {
     try {
-        // 🛑 Get token from headers
         const token = req.headers.authorization?.split(" ")[1];
-        console.log("🟢 Received Token:", token); 
         if (!token) {
             return res.status(401).json({ message: "Unauthorized: No token provided" });
         }
@@ -18,9 +16,7 @@ const authMiddleware = async (req, res, next) => {
 
         // ✅ Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        // 📝 Attach user data to request
-        req.user = decoded;
+        req.user = decoded; // 📝 Attach user to request
 
         next(); // Proceed to next middleware
     } catch (error) {
@@ -28,4 +24,4 @@ const authMiddleware = async (req, res, next) => {
     }
 };
 
-export default authMiddleware;
+export default authenticateUser;
