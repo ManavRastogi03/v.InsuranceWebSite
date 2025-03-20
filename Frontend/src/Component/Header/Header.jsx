@@ -21,7 +21,7 @@ export default function Header() {
             console.log("Token:", token);
             console.log("Profile Pic:", storedPic);
             setIsAuthenticated(!!token);
-            setProfilePic(storedPic || "https://asset.cloudinary.com/duj6tm4qi/056ccc2af0ad755f3fc50e04993e7ff2");
+            setProfilePic(storedPic || "https://res.cloudinary.com/duj6tm4qi/image/upload/v1740481333/UserDashboraddefault_r1tbcw.png");
         };
         checkAuth(); // Initial check
     

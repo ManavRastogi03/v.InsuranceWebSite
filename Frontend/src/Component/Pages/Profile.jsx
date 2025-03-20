@@ -1,17 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Edit, Eye, EyeOff } from "lucide-react";
+import { getUserProfile } from "../../api/api";
+import { uploadProfilePic } from "../../api/api";
+
 
 const Profile = () => {
-  const [userData, setUserData] = useState({
-    firstName: "John",
-    lastName: "Doe",
-    username: "johndoe",
-    email: "johndoe@example.com",
-    mobileNo: "123-456-7890",
-    gender: "Male",
-    profilePic: "https://asset.cloudinary.com/duj6tm4qi/056ccc2af0ad755f3fc50e04993e7ff2",
-  });
-
+  const [userData, setUserData] = useState(null); // ✅ Initially null, backend se data aayega
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -20,14 +14,49 @@ const Profile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
-
-  const handleProfilePicChange = (e) => {
+  // ✅ Backend se User Profile Fetch Karega
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await getUserProfile();
+        setUserData(data); // ✅ Backend se aaya data state me set karo
+      } catch (error) {
+        console.error("Error fetching profile:", error.message);
+      }
+    };
+    fetchProfile();
+  }, []);
+  useEffect(() => {
+    return () => {
+      if (userData?.profilePic?.startsWith("blob:")) {
+        URL.revokeObjectURL(userData.profilePic);
+      }
+    };
+  }, [userData?.profilePic]);
+  const handleProfilePicChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const uploadedPicUrl = URL.createObjectURL(file);
-      setUserData({ ...userData, profilePic: uploadedPicUrl });
+        // 1️⃣ Instant Preview
+        const uploadedPicUrl = URL.createObjectURL(file);
+        setUserData({ ...userData, profilePic: uploadedPicUrl });
+
+        // 2️⃣ Backend pe update karna
+        try {
+            const formData = new FormData();
+            formData.append("profilePic", file);
+            await uploadProfilePic(file);  // Backend API call
+
+            // 3️⃣ Latest profile fetch karna
+            const updatedProfile = await getUserProfile();
+            setUserData(updatedProfile);
+        } catch (error) {
+            console.error("Profile Pic Upload Failed:", error);
+            alert("Failed to upload profile picture");
+        }
     }
-  };
+};
+
+
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
@@ -48,33 +77,64 @@ const Profile = () => {
     alert(`Password reset link sent to ${resetEmail}`);
     setShowForgotPassword(false);
   };
+  useEffect(() => {
+    console.log("User Data:", userData);
+  }, [userData]);
+  if (!userData) return <p className="text-center">Loading profile...</p>; // ✅ Jab tak data nahi aata
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="bg-white p-6 rounded-lg shadow-md border border-gray-300 relative">
-        <div className="flex flex-col items-center relative">
-          <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-gray-300">
-            <img src={userData.profilePic} alt="Profile" className="w-full h-full object-cover" />
-            <label htmlFor="file-upload" className="absolute bottom-2 right-2 bg-black bg-opacity-60 px-3 py-1 rounded-full cursor-pointer flex items-center gap-1 hover:bg-opacity-80">
-              <Edit size={20} color="white" />
-              <span className="text-white text-sm">Edit</span>
-            </label>
-          </div>
-          <input id="file-upload" type="file" accept="image/*" onChange={handleProfilePicChange} className="hidden" />
-        </div>
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="bg-white p-6 rounded-lg shadow-md border border-gray-300 relative">
+          <div className="flex flex-col items-center relative">
+            <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-gray-300 bg-gray-100 flex items-center justify-center">
+              {userData.profilePic ? (
+                <img 
+                  src={userData.profilePic} 
+                  alt="Profile" 
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    console.error("Image failed to load:", e.target.src);
+                    e.target.src = "https://res.cloudinary.com/duj6tm4qi/image/upload/v1740481333/UserDashboraddefault_r1tbcw.png"; // Fallback Image
+                  }}
+                />
+              ) : (
+                <span className="text-gray-500">No Image</span>
+              )}
+
+              {/* Edit Button */}
+              <label 
+                htmlFor="file-upload" 
+                className="absolute bottom-2 right-2 bg-black bg-opacity-60 px-3 py-1 rounded-full cursor-pointer flex items-center gap-1 hover:bg-opacity-80"
+              >
+                <Edit size={20} color="white" />
+                <span className="text-white text-sm">Edit</span>
+              </label>
+            </div>
+      {/* Hidden File Upload Input */}
+      <input 
+        id="file-upload" 
+        type="file" 
+        accept="image/*" 
+        onChange={handleProfilePicChange} 
+        className="hidden" 
+      />
+    </div>
+
+
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          {Object.entries(userData).map(([key, value]) => (
-            key !== "profilePic" && (
-              <div key={key} className="border border-gray-300 p-4 rounded-lg">
-                <label className="block text-sm font-medium text-gray-700">
-                  {key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
-                </label>
-                <p className="text-lg">{value}</p>
-              </div>
-            )
-          ))}
-        </div>
+            {["firstName", "lastName", "username", "email", "mobileNo", "gender"].map((key) => (
+              userData[key] && (
+                <div key={key} className="border border-gray-300 p-4 rounded-lg">
+                  <label className="block text-sm font-medium text-gray-700">
+                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                  </label>
+                  <p className="text-lg">{userData[key]}</p>
+                </div>
+              )
+            ))}
+          </div>
+
 
         <div className="mt-6 p-4 border border-gray-300 rounded-lg text-center">
           <h2 className="text-lg font-semibold">Change Password</h2>
