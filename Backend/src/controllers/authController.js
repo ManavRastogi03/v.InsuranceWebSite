@@ -8,20 +8,42 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 // ✅ Register User with Admin Code Verification
 export const registerUser = async (req, res) => {
   try {
-    let { firstName, lastName, username, email, password, adminCode } = req.body;
+    let { firstName, lastName, username, email, password, mobileNo, gender, adminCode } = req.body;
 
     // ✨ Trim Inputs to Remove Extra Spaces
     firstName = firstName.trim();
     lastName = lastName.trim();
     username = username.trim();
-    email = email.trim().toLowerCase(); // ✅ Normalize email for case-insensitive check
+    email = email.trim().toLowerCase(); // ✅ Normalize email
+    mobileNo = mobileNo.trim();
 
-    // 🔍 Check if User Already Exists (by Email or Username)
-    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+    // 🔍 Validate Required Fields
+    if (!firstName || !lastName || !username || !email || !password || !mobileNo || !gender) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
+
+    // 🔍 Validate Mobile Number (10 Digits)
+    if (!/^[0-9]{10}$/.test(mobileNo)) {
+      return res.status(400).json({ success: false, message: "Invalid mobile number format" });
+    }
+
+    // 🔍 Validate Gender
+    const allowedGenders = ["Male", "Female", "Other"];
+    if (!allowedGenders.includes(gender)) {
+      return res.status(400).json({ success: false, message: "Invalid gender value" });
+    }
+
+    // 🔍 Check if User Already Exists (by Email, Username, or Mobile Number)
+    const existingUser = await User.findOne({ $or: [{ email }, { username }, { mobileNo }] });
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: existingUser.email === email ? "Email already in use" : "Username already taken",
+        message:
+          existingUser.email === email
+            ? "Email already in use"
+            : existingUser.username === username
+            ? "Username already taken"
+            : "Mobile number already registered",
       });
     }
 
@@ -35,13 +57,15 @@ export const registerUser = async (req, res) => {
       }
     }
 
-    // 📝 Create New User (Password Hashing Happens in Model)
+    // 📝 Create New User
     const newUser = new User({
       firstName,
       lastName,
       username,
       email,
       password,
+      mobileNo,
+      gender,
       role, // ✅ Assign Role
       profilePic: process.env.DEFAULT_PROFILE_IMAGE, // ✅ Default Profile Picture
     });
@@ -61,6 +85,8 @@ export const registerUser = async (req, res) => {
         userId: newUser._id,
         email: newUser.email,
         username: newUser.username,
+        mobileNo: newUser.mobileNo,
+        gender: newUser.gender,
         role: newUser.role,
         profilePic: newUser.profilePic,
         token, // ✅ Send Token
@@ -71,6 +97,7 @@ export const registerUser = async (req, res) => {
     res.status(500).json({ success: false, message: "Error registering user", error: error.message });
   }
 };
+
 
 
 
@@ -88,7 +115,7 @@ export const loginUser = async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
     // 🎟️ Generate JWT Token
-    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id, email: user.email,role:user.role }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
     res.json({ token, user });
   } catch (error) {

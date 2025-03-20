@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  @keyframes box1 {
+    0%, 50% { transform: translate(32px, 0); }
+    100% { transform: translate(64px, 0); }
+  }
+
+  @keyframes box2 {
+    0% { transform: translate(0, 32px); }
+    50% { transform: translate(0, 0); }
+    100% { transform: translate(32px, 0); }
+  }
+
+  @keyframes box3 {
+    0%, 50% { transform: translate(32px, 32px); }
+    100% { transform: translate(0, 32px); }
+  }
+
+  @keyframes box4 {
+    0% { transform: translate(64px, 0); }
+    50% { transform: translate(64px, 32px); }
+    100% { transform: translate(32px, 32px); }
+  }
+
+  .animate-box1 { @apply animate-[box1_800ms_linear_infinite]; }
+  .animate-box2 { @apply animate-[box2_800ms_linear_infinite]; }
+  .animate-box3 { @apply animate-[box3_800ms_linear_infinite]; }
+  .animate-box4 { @apply animate-[box4_800ms_linear_infinite]; }
+}

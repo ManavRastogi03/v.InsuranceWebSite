@@ -1,15 +1,28 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import healthLogo from '../../Image/health.png'; // Replace with your logo paths
+import { useEffect } from "react";
 import carLogo from '../../Image/car.png';
 import lifeLogo from '../../Image/life.png';
 import termLogo from '../../Image/term.png';
 import bikeLogo from '../../Image/bike.png';
 import businessLogo from '../../Image/business.png';
+import { useNavigate } from "react-router-dom";
 import travelLogo from '../../Image/travel.png';
 import claimImage from '../../Image/claim.png'; // Replace with your claim image
 
 function Home() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const isRegistered = localStorage.getItem("userRegistered");
+
+    if (!isRegistered) {
+      setTimeout(() => {
+        navigate("/signup");
+      }, 5000); // Adjust time as needed
+    }
+  }, [navigate]);
   const insuranceTypes = [
     { name: 'Health Insurance', logo: healthLogo, path: '/health-insurance/family' },
     { name: 'Car Insurance', logo: carLogo, path: '/car-insurance' },

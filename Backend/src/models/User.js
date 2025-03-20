@@ -26,7 +26,8 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      minlength: 6,
+      required: [true, "Password is required"],
+      minlength: [6, "Password must be at least 6 characters"],
     },
     profilePic: { 
       type: String, 
@@ -35,6 +36,17 @@ const userSchema = new mongoose.Schema(
     googleId: {
       type: String, // Google Authentication ke liye
       default: null,
+    },
+    mobileNo: {
+      type: String,
+      required: [true, "Mobile number is required"],
+      unique: true,
+      match: [/^[0-9]{10}$/, "Mobile number must be 10 digits"],
+    },
+    gender: {
+      type: String,
+      enum: ["Male", "Female", "Other"],
+      required: [true, "Gender is required"],
     },
     role: {
       type: String,

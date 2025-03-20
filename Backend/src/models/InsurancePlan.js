@@ -77,9 +77,28 @@ const InsurancePlanSchema = new mongoose.Schema(
       type: Boolean,
       default: false, // ✅ Soft delete functionality
     },
+    subscribedUsers: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User", // ✅ Track users who have taken the plan
+        },
+        subscribedAt: {
+          type: Date,
+          default: Date.now, // ✅ Timestamp when user subscribed
+        },
+        status: {
+          type: String,
+          enum: ["Active", "Inactive"],
+          default: "Active", // ✅ Track if user is currently subscribed
+        },
+      },
+    ],
   },
   {
     timestamps: true, // ✅ Auto add createdAt & updatedAt fields
+    toJSON: { virtuals: true }, // ✅ Include virtual fields in responses
+    toObject: { virtuals: true },
   }
 );
 
@@ -89,6 +108,14 @@ InsurancePlanSchema.virtual("totalCost").get(function () {
   if (this.duration === "2 Years") durationYears = 2;
   else if (this.duration === "5 Years") durationYears = 5;
   return this.premiumPrice * durationYears;
+});
+
+// ✅ Pre-save Middleware: Ensure Status Consistency
+InsurancePlanSchema.pre("save", function (next) {
+  if (!this.status) {
+    this.status = "Active";
+  }
+  next();
 });
 
 // ✅ Exclude soft-deleted records in queries

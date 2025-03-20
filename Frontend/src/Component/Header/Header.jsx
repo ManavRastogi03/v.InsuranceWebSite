@@ -1,171 +1,199 @@
-import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../../Image/I.png";
 
 export default function Header() {
-    const [isInsuranceOpen, setIsInsuranceOpen] = useState(false);
-    const [isHealthInsuranceOpen, setIsHealthInsuranceOpen] = useState(false);
-    const [isAdvisoryOpen, setIsAdvisoryOpen] = useState(false); // New state for Insurance Advisory
-    const [isSupportOpen, setIsSupportOpen] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [profilePic, setProfilePic] = useState(null);
+    const [dropdowns, setDropdowns] = useState({
+        insurance: false,
+        healthInsurance: false,
+        advisory: false,
+        support: false
+    });
 
-    // Event handlers for hover
-    const handleMouseEnterInsurance = () => setIsInsuranceOpen(true);
-    const handleMouseLeaveInsurance = () => setIsInsuranceOpen(false);
 
-    const handleMouseEnterHealthInsurance = () => setIsHealthInsuranceOpen(true);
-    const handleMouseLeaveHealthInsurance = () => setIsHealthInsuranceOpen(false);
+    // Load authentication state & profile picture
+    useEffect(() => {
+        const checkAuth = () => {
+            const token = localStorage.getItem("token");
+            const storedPic = localStorage.getItem("profilePic");
+            console.log("Token:", token);
+            console.log("Profile Pic:", storedPic);
+            setIsAuthenticated(!!token);
+            setProfilePic(storedPic || "https://asset.cloudinary.com/duj6tm4qi/056ccc2af0ad755f3fc50e04993e7ff2");
+        };
+        checkAuth(); // Initial check
+    
+        // Listen for changes in localStorage
+        window.addEventListener("storage", checkAuth);
+    
+        return () => {
+            window.removeEventListener("storage", checkAuth);
+        };
+    }, []);
+    
 
-    const handleMouseEnterAdvisory = () => setIsAdvisoryOpen(true); // New handler for Insurance Advisory
-    const handleMouseLeaveAdvisory = () => setIsAdvisoryOpen(false);
+    // Logout function
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("profilePic");
+        setIsAuthenticated(false);
+        setProfilePic(null);
+    };
 
-    const handleMouseEnterSupport = () => setIsSupportOpen(true);
-    const handleMouseLeaveSupport = () => setIsSupportOpen(false);
+    // Toggle dropdowns dynamically
+    const toggleDropdown = (key, isOpen) => {
+        setDropdowns((prev) => ({ ...prev, [key]: isOpen }));
+    };
 
     return (
-        <header className="shadow sticky z-50 top-0">
-            <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5">
-                <div className="flex justify-between items-center mx-auto max-w-screen-xl">
-                    {/* Logo on the left */}
+        <header className="shadow-md sticky top-0 z-50 bg-white">
+            <nav className="border-gray-200 px-4 lg:px-6 py-2.5">
+                <div className="flex justify-between items-center max-w-screen-xl mx-auto">
+
+                    {/* Logo */}
                     <Link to="/" className="flex items-center">
-                        <img src={logo} className="mr-14 h-14 w-35" alt="Logo" />
+                        <img src={logo} className="h-14 w-auto" alt="Logo" />
                     </Link>
 
-                    {/* Centered Navigation Links */}
-                    <div className="hidden lg:flex lg:space-x-8 lg:items-center lg:flex-1 lg:justify-center">
-                        {/* Dropdown Menu for Insurance */}
-                        <div className="relative" onMouseEnter={handleMouseEnterInsurance} onMouseLeave={handleMouseLeaveInsurance}>
-                            <NavLink to="#" className="py-2 px-4 text-gray-700 hover:text-green-300">
-                                Insurance
-                            </NavLink>
+                    {/* Navigation Links */}
+                    <div className="hidden lg:flex lg:items-center lg:space-x-8">
 
-                            {/* First Level Dropdown Menu for Insurance */}
-                            {isInsuranceOpen && (
-                                <div className="absolute left-0 mt-2 w-72 bg-white border border-gray-200 shadow-lg z-50">
-                                    <ul className="p-4 text-gray-700">
-                                        <li
-                                            className="relative py-1 hover:bg-gray-100"
-                                            onMouseEnter={handleMouseEnterHealthInsurance}
-                                            onMouseLeave={handleMouseLeaveHealthInsurance}
-                                        >
-                                            <span className="flex items-center">
-                                                Health Insurance
-                                                {/* Arrow Icon */}
-                                                <svg
-                                                    className="ml-1 w-4 h-4 text-gray-500"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                                                </svg>
-                                            </span>
+                        {/* Insurance Dropdown */}
+                        <DropdownMenu
+                            label="Insurance"
+                            isOpen={dropdowns.insurance}
+                            onMouseEnter={() => toggleDropdown("insurance", true)}
+                            onMouseLeave={() => toggleDropdown("insurance", false)}
+                            menuItems={[
+                                { label: "Car Insurance", link: "/car-insurance" },
+                                { label: "Life Insurance", link: "/life-insurance" },
+                                { label: "Term Insurance", link: "/term-insurance" },
+                                { label: "Bike Insurance", link: "/bike-insurance" },
+                                { label: "Business Insurance", link: "/business-insurance" },
+                                { label: "Travel Insurance", link: "/travel-insurance" },
+                            ]}
+                            subMenu={{
+                                label: "Health Insurance",
+                                items: [
+                                    { label: "Family Plans", link: "/health-insurance/family" },
+                                    { label: "Senior Citizen", link: "/health-insurance/seniorcitizen" },
+                                    { label: "For Parents", link: "/health-insurance/parents" },
+                                    { label: "Women Insurance", link: "/health-insurance/women" },
+                                    { label: "Children Insurance", link: "/health-insurance/children" },
+                                    { label: "Premium Calculator", link: "/health-insurance/calculator" },
+                                ],
+                                isOpen: dropdowns.healthInsurance,
+                                onMouseEnter: () => toggleDropdown("healthInsurance", true),
+                                onMouseLeave: () => toggleDropdown("healthInsurance", false),
+                            }}
+                        />
 
-                                            {/* Second Level Dropdown Menu for Health Insurance */}
-                                            {isHealthInsuranceOpen && (
-                                                <div className="absolute top-0 left-full ml-2 w-72 bg-white border border-gray-200 shadow-lg z-50">
-                                                    <ul className="p-4 text-gray-700">
-                                                        <NavLink to="/health-insurance/family">
-                                                            <li className="py-1 hover:bg-gray-100">Health Insurance Plans for Family</li>
-                                                        </NavLink>
-                                                        <NavLink to="/health-insurance/seniorcitizen">
-                                                            <li className="py-1 hover:bg-gray-100">Health Insurance for Senior Citizens</li>
-                                                        </NavLink>
-                                                        <NavLink to="/health-insurance/parents">
-                                                            <li className="py-1 hover:bg-gray-100">Health Insurance for Parents</li>
-                                                        </NavLink>
-                                                        <NavLink to="/health-insurance/women">
-                                                            <li className="py-1 hover:bg-gray-100">Women Health Insurance</li>
-                                                        </NavLink>
-                                                        <NavLink to="/health-insurance/children">
-                                                            <li className="py-1 hover:bg-gray-100">Health Insurance for Children</li>
-                                                        </NavLink>
-                                                        <NavLink to="/health-insurance/calculator">
-                                                            <li className="py-1 hover:bg-gray-100">Health Insurance Premium Calculator</li>
-                                                        </NavLink>
-                                                    </ul>
-                                                </div>
-                                            )}
-                                        </li>
-                                        <li className="py-1 hover:bg-gray-100">
-                                            <NavLink to="/car-insurance">Car Insurance</NavLink>
-                                        </li>
-                                        <li className="py-1 hover:bg-gray-100">
-                                            <NavLink to="/life-insurance">Life Insurance</NavLink>
-                                        </li>
-                                        <li className="py-1 hover:bg-gray-100">
-                                            <NavLink to="/term-insurance">Term Insurance</NavLink>
-                                        </li>
-                                        <li className="py-1 hover:bg-gray-100">
-                                            <NavLink to="/bike-insurance">Bike Insurance</NavLink>
-                                        </li>
-                                        <li className="py-1 hover:bg-gray-100">
-                                            <NavLink to="/business-insurance">Business Insurance</NavLink>
-                                        </li>
-                                        <li className="py-1 hover:bg-gray-100">
-                                            <NavLink to="/travel-insurance">Travel Insurance</NavLink>
-                                        </li>
-                                    </ul>
-                                </div>
-                            )}
-                        </div>
+                        {/* Insurance Advisory Dropdown */}
+                        <DropdownMenu
+                            label="Insurance Advisory"
+                            isOpen={dropdowns.advisory}
+                            onMouseEnter={() => toggleDropdown("advisory", true)}
+                            onMouseLeave={() => toggleDropdown("advisory", false)}
+                            menuItems={[
+                                { label: "Insurance Tips", link: "#" },
+                                { label: "Best Policies", link: "#" },
+                                { label: "Claim Guidance", link: "#" },
+                                { label: "FAQs", link: "#" },
+                                { label: "Policy Comparison", link: "#" },
+                            ]}
+                        />
 
-                        {/* Dropdown Menu for Insurance Advisory */}
-                        <div className="relative" onMouseEnter={handleMouseEnterAdvisory} onMouseLeave={handleMouseLeaveAdvisory}>
-                            <NavLink to="#" className="py-2 px-4 text-gray-700 hover:text-green-300">
-                                Insurance Advisory
-                            </NavLink>
-
-                            {/* Advisory Dropdown Menu */}
-                            {isAdvisoryOpen && (
-                                <div className="absolute left-0 mt-2 w-72 bg-white border border-gray-200 shadow-lg z-50">
-                                    <ul className="p-4 text-gray-700">
-                                        <li className="py-1 hover:bg-gray-100">Insurance Tips</li>
-                                        <li className="py-1 hover:bg-gray-100">Best Insurance Policies</li>
-                                        <li className="py-1 hover:bg-gray-100">Claim Process Guidance</li>
-                                        <li className="py-1 hover:bg-gray-100">Insurance FAQs</li>
-                                        <li className="py-1 hover:bg-gray-100">Comparison of Policies</li>
-                                    </ul>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Other nav items (e.g., Support) */}
-                        <div className="relative" onMouseEnter={handleMouseEnterSupport} onMouseLeave={handleMouseLeaveSupport}>
-                            <NavLink to="#" className="py-2 px-4 text-gray-700 hover:text-green-300">
-                                Support
-                            </NavLink>
-
-                            {/* Dropdown Menu for Support */}
-                            {isSupportOpen && (
-                                <div className="absolute left-0 mt-2 w-72 bg-white border border-gray-200 shadow-lg z-50">
-                                    <ul className="p-4 text-gray-700">
-                                        <li className="py-1 hover:bg-gray-100">Customer Support</li>
-                                        <li className="py-1 hover:bg-gray-100">FAQ</li>
-                                        <li className="py-1 hover:bg-gray-100">Contact Us</li>
-                                    </ul>
-                                </div>
-                            )}
-                        </div>
+                        {/* Support Dropdown */}
+                        <DropdownMenu
+                            label="Support"
+                            isOpen={dropdowns.support}
+                            onMouseEnter={() => toggleDropdown("support", true)}
+                            onMouseLeave={() => toggleDropdown("support", false)}
+                            menuItems={[
+                                { label: "Customer Support", link: "#" },
+                                { label: "FAQ", link: "#" },
+                                { label: "Contact Us", link: "#" },
+                            ]}
+                        />
                     </div>
 
-                    {/* Login and Get Started on the right */}
-                    <div className="lg:ml-auto">
-                        <Link
-                            to="/login"
-                            className="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
-                        >
-                            Log in
-                        </Link>
-                        <Link
-                            to="/Signup"
-                            className="text-white bg-green-300 hover:bg-green-400 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
-                        >
-                            Get started
-                        </Link>
+                    {/* Authentication Section */}
+                    <div className="lg:ml-auto flex items-center space-x-4">
+                        {isAuthenticated ? (
+                            <>
+                                {/* Profile Picture */}
+                                <Link to="/profile" className="flex items-center space-x-2">
+                                    <img 
+                                        src={profilePic} 
+                                        alt="Profile" 
+                                        className="w-10 h-10 rounded-full border"
+                                    />
+                                </Link>
+                                <button onClick={handleLogout} className="text-white bg-green-300 hover:bg-green-400 font-medium rounded-lg text-sm px-4 py-2">
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/login" className="text-gray-800 hover:bg-gray-50 font-medium rounded-lg text-sm px-4 py-2">
+                                    Log in
+                                </Link>
+                                <Link to="/signup" className="text-white bg-green-300 hover:bg-green-400 font-medium rounded-lg text-sm px-4 py-2">
+                                    Get started
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </nav>
         </header>
+    );
+}
+
+/* DropdownMenu Component */
+function DropdownMenu({ label, isOpen, onMouseEnter, onMouseLeave, menuItems, subMenu }) {
+    return (
+        <div className="relative" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+            <NavLink to="#" className="py-2 px-4 text-gray-700 hover:text-green-300">
+                {label}
+            </NavLink>
+            {isOpen && (
+                <div className="absolute left-0 mt-2 w-72 bg-white border shadow-lg z-50">
+                    <ul className="p-4 text-gray-700">
+                        {subMenu && (
+                            <li className="relative py-1 hover:bg-gray-100"
+                                onMouseEnter={subMenu.onMouseEnter}
+                                onMouseLeave={subMenu.onMouseLeave}>
+                                <span className="flex items-center">
+                                    {subMenu.label}
+                                    <svg className="ml-1 w-4 h-4 text-gray-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </span>
+                                {subMenu.isOpen && (
+                                    <div className="absolute top-0 left-full ml-2 w-72 bg-white border shadow-lg z-50">
+                                        <ul className="p-4 text-gray-700">
+                                            {subMenu.items.map((item, index) => (
+                                                <NavLink key={index} to={item.link}>
+                                                    <li className="py-1 hover:bg-gray-100">{item.label}</li>
+                                                </NavLink>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </li>
+                        )}
+                        {menuItems.map((item, index) => (
+                            <NavLink key={index} to={item.link}>
+                                <li className="py-1 hover:bg-gray-100">{item.label}</li>
+                            </NavLink>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </div>
     );
 }
