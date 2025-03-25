@@ -57,3 +57,18 @@ export const uploadProfilePic = async (file) => {
         throw new Error(error.response?.data?.message || "Failed to upload profile picture");
     }
 };
+
+export const updatePassword = async (passwordData) => {
+    try {
+      const response = await axios.put("/api/profile/update-password", passwordData, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      console.log("API Response:", response.data); 
+      return response.data; // ✅ API ka response return karo
+    } catch (error) {
+      console.error("API Error (updatePassword):", error.response?.data || error.message);
+
+      // ❌ Agar backend error response nahi de raha to default error message return karo
+      throw new Error(error.response?.data?.message || "Failed to update password");
+    }
+  };

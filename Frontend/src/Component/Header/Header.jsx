@@ -38,6 +38,8 @@ export default function Header() {
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("profilePic");
+        localStorage.removeItem("userRegistered");
+        localStorage.removeItem("user");
         setIsAuthenticated(false);
         setProfilePic(null);
     };

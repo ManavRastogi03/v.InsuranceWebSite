@@ -20,27 +20,35 @@ function LoginPage() {
     }
   }, [navigate]); // Runs on page load
 
+  
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
   
     try {
-      const response = await loginUser({ email, password });
-      console.log('Login Successful:', response);  // 🟢 Debug log
-      
-      // ✅ Corrected Local Storage Access
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-  
-      // Navigate to homepage/dashboard
-      navigate('/');
+        const response = await loginUser({ email, password });
+        console.log('Login Successful:', response);  // 🟢 Debug log
+        
+        // ✅ Store token & user data
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+
+        // ✅ Ensure `userRegistered` is set
+        localStorage.setItem('userRegistered', "true");
+
+        console.log("LocalStorage after login:");
+        console.log("userRegistered:", localStorage.getItem("userRegistered"));
+
+        // Navigate to homepage/dashboard
+        navigate('/');
     } catch (error) {
-      setError(error.response?.data?.message || 'Oops! Something went wrong. Try again.');
+        setError(error.response?.data?.message || 'Oops! Something went wrong. Try again.');
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
+
   
     // ✅ Google Sign-In
     const handleGoogleLogin = () => {

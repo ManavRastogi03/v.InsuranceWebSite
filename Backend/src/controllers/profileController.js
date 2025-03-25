@@ -31,35 +31,31 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
-// ✅ Update User Profile
-export const updateUserProfile = async (req, res) => {
+
+// ✅ Update Password
+export const updatePassword = async (req, res) => {
   try {
     const userId = req.user.id; // Token se user ka ID mila
-    const { firstName, lastName, username, email, password } = req.body;
+    const { oldPassword, newPassword } = req.body;
 
     // 🔍 User find karein
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // 📝 Jo fields update honi hain unko assign karein
-    if (firstName) user.firstName = firstName;
-    if (lastName) user.lastName = lastName;
-    if (username) user.username = username;
-    if (email) user.email = email;
+    // 🔑 Old password verify karein
+    const isMatch = await user.comparePassword(oldPassword);
+    if (!isMatch) return res.status(400).json({ message: "Old password is incorrect" });
 
-    // 🔑 Password ko sirf assign karo, hashing `pre("save")` middleware karega
-    if (password) {
-      user.password = password; // ❌ Manually hash mat karo
-    }
-
-    // 💾 Save updated user
+    // 🔐 Naya password set karein (hashing pre-save middleware karega)
+    user.password = newPassword;
     await user.save();
 
-    res.json({ message: "Profile updated successfully", user });
+    res.json({ message: "Password updated successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error updating profile", error: error.message });
+    res.status(500).json({ message: "Error updating password", error: error.message });
   }
 };
+
 
 // 📸 Set up Multer Storage for Cloudinary
 const storage = new CloudinaryStorage({

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import Signup from "../SignUp/Signup.jsx"; // ✅ Ensure correct import path
 
 const RequireAuth = ({ children }) => {
@@ -7,24 +8,33 @@ const RequireAuth = ({ children }) => {
 
     useEffect(() => {
         if (!isUserLoggedIn) {
-            const interval = setInterval(() => {
-                setShowModal(true); // Show Signup Popup Every 5s
-            }, 5000);
-            return () => clearInterval(interval);
+            // ✅ Show modal once after 3 seconds
+            const timer = setTimeout(() => {
+                setShowModal(true);
+            }, 3000);
+            return () => clearTimeout(timer);
         }
     }, [isUserLoggedIn]);
 
-    return isUserLoggedIn ? children : (
+    if (isUserLoggedIn) return children; // ✅ Allow access if logged in
+
+    return (
         <>
             {showModal && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg">
-                        <h2 className="text-xl font-bold">Sign Up to Continue</h2>
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                        <h2 className="text-xl font-bold mb-3">Sign Up to Continue</h2>
                         <Signup /> {/* ✅ Render Signup Form */}
-                        <button className="mt-2 text-red-500" onClick={() => setShowModal(false)}>Close</button>
+                        <button 
+                            className="mt-4 text-red-500 hover:text-red-700"
+                            onClick={() => setShowModal(false)}
+                        >
+                            Close
+                        </button>
                     </div>
                 </div>
             )}
+            <Navigate to="/login" replace /> {/* 🔴 Redirect if user tries to access protected pages */}
         </>
     );
 };

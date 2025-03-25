@@ -11,9 +11,10 @@ import TermInsurance from "../Component/TermInsurance/TermInsurance";
 import LoginPage from "../Component/Login/Login";
 import Healthinsurance from "../Component/HeathInsurance/HeathInsurance";
 import Signup from "../Component/SignUp/Signup";
-import Dashboard from "../Component/Pages/Dashboard";
+import Dashboard from "../Admin/Component/Dashboard.jsx";
 import Profile from "../Component/Pages/Profile";
 import RequireAuth from "../Component/Middleware/RequireAuth.jsx"; // Middleware
+import RequireAdminAuth from "../Component/Middleware/RequireAdminAuth.jsx"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +33,8 @@ const router = createBrowserRouter(
 
       {/* ✅ Protected Routes (Require Login) */}
       <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
+      <Route path="/admin/dashboard" element={<RequireAdminAuth><Dashboard /></RequireAdminAuth>} />
+      <Route path="/admin/profile" element={<RequireAdminAuth><Profile /></RequireAdminAuth>} />
       <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
     </Route>
   )

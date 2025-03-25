@@ -2,6 +2,7 @@ import React, { useState,useEffect } from "react";
 import { Edit, Eye, EyeOff } from "lucide-react";
 import { getUserProfile } from "../../api/api";
 import { uploadProfilePic } from "../../api/api";
+import { updatePassword } from "../../api/api";
 
 
 const Profile = () => {
@@ -14,6 +15,7 @@ const Profile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
+
   // ✅ Backend se User Profile Fetch Karega
   useEffect(() => {
     const fetchProfile = async () => {
@@ -26,6 +28,7 @@ const Profile = () => {
     };
     fetchProfile();
   }, []);
+
   useEffect(() => {
     return () => {
       if (userData?.profilePic?.startsWith("blob:")) {
@@ -33,6 +36,7 @@ const Profile = () => {
       }
     };
   }, [userData?.profilePic]);
+
   const handleProfilePicChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -44,7 +48,7 @@ const Profile = () => {
         try {
             const formData = new FormData();
             formData.append("profilePic", file);
-            await uploadProfilePic(file);  // Backend API call
+            await uploadProfilePic(formData);  // Backend API call
 
             // 3️⃣ Latest profile fetch karna
             const updatedProfile = await getUserProfile();
@@ -57,20 +61,47 @@ const Profile = () => {
 };
 
 
-
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
     setPasswordData({ ...passwordData, [name]: value });
   };
 
-  const handlePasswordSubmit = (e) => {
+  const handlePasswordSubmit = async (e) => {
     e.preventDefault();
+  
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert("New password and confirm password do not match");
+      alert("❌ New password and confirm password do not match");
       return;
     }
-    alert("Password updated successfully");
+  
+    try {
+      console.log("🔄 Sending request to update password...");
+      
+      const response = await updatePassword({
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+      });
+  
+      console.log("✅ Password update response:", response);
+      alert("✅ Password updated successfully!");
+  
+      setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+  
+    } catch (error) {
+      console.error("❌ Error updating password:", error);
+      console.log("🔍 Full error details:", error.response); // ✅ Debugging ke liye
+  
+      const errorMessage =
+        error.response?.data?.message ||  // ✅ Backend error message
+        error.response?.statusText ||    // ✅ HTTP status text
+        error.message ||                 // ✅ JavaScript error
+        "Unknown error occurred";        // ❌ Default error message
+  
+      alert("❌ Error updating password: " + errorMessage);
+    }
   };
+  
+
 
   const handleForgotPassword = (e) => {
     e.preventDefault();
