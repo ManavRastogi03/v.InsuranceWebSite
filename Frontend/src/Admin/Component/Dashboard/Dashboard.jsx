@@ -35,27 +35,27 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-6">
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {summaryData.map((item, index) => (
           <div
             key={index}
-            className={`flex items-center justify-between p-6 rounded-2xl shadow-md text-white ${item.bg} transform transition duration-300 hover:scale-105 hover:shadow-lg opacity-0 animate-fade-in`}
+            className={`flex items-center justify-between p-4 sm:p-6 rounded-xl shadow-md text-white ${item.bg} transform transition duration-300 hover:scale-105 hover:shadow-lg`}
           >
             <div>
-              <h3 className="text-lg font-semibold">{item.title}</h3>
-              <p className="text-2xl font-bold">{item.count}</p>
+              <h3 className="text-sm sm:text-lg font-semibold">{item.title}</h3>
+              <p className="text-lg sm:text-2xl font-bold">{item.count}</p>
             </div>
-            <div className="bg-white p-3 rounded-xl text-black">{item.icon}</div>
+            <div className="bg-white p-2 sm:p-3 rounded-xl text-black">{item.icon}</div>
           </div>
         ))}
       </div>
 
       {/* Users Growth Chart */}
-      <div className="bg-white p-6 rounded-2xl shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Users Growth (Last 6 Months)</h2>
-        <ResponsiveContainer width="100%" height={300}>
+      <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md">
+        <h2 className="text-lg sm:text-xl font-semibold mb-4">Users Growth (Last 6 Months)</h2>
+        <ResponsiveContainer width="100%" height={250}>
           <LineChart data={userGrowthData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="month" />
@@ -67,9 +67,9 @@ export default function Dashboard() {
       </div>
 
       {/* Revenue Stats Bar Chart */}
-      <div className="bg-white p-6 rounded-2xl shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Revenue Stats (Last 6 Months)</h2>
-        <ResponsiveContainer width="100%" height={300}>
+      <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md">
+        <h2 className="text-lg sm:text-xl font-semibold mb-4">Revenue Stats (Last 6 Months)</h2>
+        <ResponsiveContainer width="100%" height={250}>
           <BarChart data={revenueData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="month" />
@@ -81,11 +81,11 @@ export default function Dashboard() {
       </div>
 
       {/* Claims Status Pie Chart */}
-      <div className="bg-white p-6 rounded-2xl shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Claims Status</h2>
-        <ResponsiveContainer width="100%" height={300}>
+      <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md">
+        <h2 className="text-lg sm:text-xl font-semibold mb-4">Claims Status</h2>
+        <ResponsiveContainer width="100%" height={250}>
           <PieChart>
-            <Pie data={claimsData} dataKey="value" nameKey="status" cx="50%" cy="50%" outerRadius={100} label>
+            <Pie data={claimsData} dataKey="value" nameKey="status" cx="50%" cy="50%" outerRadius={80} label>
               {claimsData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
@@ -95,7 +95,9 @@ export default function Dashboard() {
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <RecentActivities/>
+
+      {/* Recent Activities */}
+      <RecentActivities />
     </div>
   );
 }

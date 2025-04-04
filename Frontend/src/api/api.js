@@ -72,3 +72,65 @@ export const updatePassword = async (passwordData) => {
       throw new Error(error.response?.data?.message || "Failed to update password");
     }
   };
+  // API calls for insurance companies
+
+  export const addInsuranceCompany = async (companyData) => {
+    const formData = new FormData();
+    formData.append('companyLogo', companyData.logo); // Attach file
+    formData.append('companyName', companyData.name);
+    formData.append('contactNumber', companyData.contact);
+    formData.append('insurancePlans', JSON.stringify(companyData.plans));
+  
+    console.log("🚀 Sending Data to API:", {
+      companyName: companyData.name,
+      contactNumber: companyData.contact,
+      insurancePlans: companyData.plans,
+      companyLogo: companyData.logo,
+    });
+  
+    try {
+      const response = await API.post('/api/insurance/admin/createcompany', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // 🔑 Add Token
+        },
+      });
+  
+      console.log("✅ API Response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("❌ API Error (addInsuranceCompany):", error.response?.data || error.message);
+      throw new Error(error.response?.data?.message || "Failed to add company");
+    }
+  };
+  // ✅ Fetch All Insurance Companies (GET)
+export const getCompanies = async () => {
+  try {
+      const response = await API.get("api/insurance/companies", {
+          headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`, // 🔑 Auth Token
+          },
+      });
+
+      console.log("✅ Companies Fetched:", response.data);
+      return response.data; // ✅ Return data to be used in frontend
+  } catch (error) {
+      console.error("❌ API Error (getCompanies):", error.response?.data || error.message);
+      throw new Error(error.response?.data?.message || "Failed to fetch companies");
+  }
+};
+export const deleteInsuranceCompany = async (companyId) => {
+  try {
+      const response = await API.delete(`/api/insurance/admin/deletecompany/${companyId}`, {
+          headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`, // 🔑 Send Auth Token
+          },
+      });
+
+      console.log("✅ Company Deleted Successfully:", response.data);
+      return response.data; // ✅ Return API Response
+  } catch (error) {
+      console.error("❌ API Error (deleteInsuranceCompany):", error.response?.data || error.message);
+      throw new Error(error.response?.data?.message || "Failed to delete company");
+  }
+};
