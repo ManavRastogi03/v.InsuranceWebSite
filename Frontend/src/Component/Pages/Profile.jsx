@@ -54,6 +54,7 @@ const Profile = () => {
             const updatedProfile = await getUserProfile();
             setUserData(updatedProfile);
         } catch (error) {
+          console.log("🔥 updatedProfile", updatedProfile.profilePic);
             console.error("Profile Pic Upload Failed:", error);
             alert("Failed to upload profile picture");
         }

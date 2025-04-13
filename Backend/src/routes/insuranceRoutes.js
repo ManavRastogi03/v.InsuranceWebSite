@@ -1,9 +1,8 @@
 import express from "express";
-import { getAllInsurancePlans,getInsurancePlanById  } from "../controllers/insuranceController.js";
+// import { getAllInsurancePlans,getInsurancePlanById  } from "../controllers/insuranceController.js";
 import authenticateUser from "../middlewares/authenticateUser.js";
 import authorizeAdmin from "../middlewares/authorizeAdmin.js";
 import {createInsurancePlan }from "../controllers/insurancePlanController.js"
-import { deleteInsurancePlan } from "../controllers/insurancePlanController.js";
 import { updateInsurancePlan } from "../controllers/insurancePlanController.js";
 import { subscribeToPlan } from "../controllers/insurancePlanController.js";
 import {getUserSubscriptions} from "../controllers/insurancePlanController.js"
@@ -21,7 +20,7 @@ const router = express.Router();
 
 // ✅ Admin-Only APIs
 router.post("/admin/createinsurance", authenticateUser, authorizeAdmin, createInsurancePlan);
-router.delete("/admin/deleteinsurance/:id", authenticateUser, authorizeAdmin, deleteInsurancePlan);
+
 router.put("/admin/updateinsurance/:planId", authenticateUser, authorizeAdmin, updateInsurancePlan);
 
 // ✅ Subscription API (For Users)

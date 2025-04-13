@@ -1,28 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../ui/Button.jsx";
 import Input from "../ui/Input.jsx";
 import Table from "../ui/Table.jsx";
 import { Lock, Unlock } from "lucide-react";
-
-const usersData = [
-  { id: 1, name: "John Doe", email: "john@example.com", status: "active", policies: ["Basic", "Gold"] },
-  { id: 2, name: "Jane Smith", email: "jane@example.com", status: "blocked", policies: ["Premium"] },
-  { id: 3, name: "Michael Lee", email: "michael@example.com", status: "active", policies: ["Basic", "Custom"] },
-];
+import { getAllUsers, toggleUserStatus } from "../../../api/api.js"; // ✅ Make sure this path is correct
 
 export default function UsersManagement() {
-  const [users, setUsers] = useState(usersData);
+  const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const toggleBlockUser = (id) => {
-    setUsers(users.map(user => 
-      user.id === id ? { ...user, status: user.status === "active" ? "blocked" : "active" } : user
-    ));
+  // ✅ Fetch users on mount
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        const data = await getAllUsers();
+        setUsers(data.users || []);
+      } catch (err) {
+        console.error("❌ Failed to fetch users:", err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  // ✅ Toggle user status
+  const handleToggleStatus = async (id) => {
+    try {
+      await toggleUserStatus(id);
+      setUsers(users.map(user =>
+        user._id === id
+          ? { ...user, status: user.status === "active" ? "blocked" : "active" }
+          : user
+      ));
+    } catch (err) {
+      alert("Error toggling user status");
+      console.error(err);
+    }
   };
 
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(search.toLowerCase()) ||
-    user.email.toLowerCase().includes(search.toLowerCase())
+  // 🔍 Filtered by search
+  const filteredUsers = users.filter((user) =>
+    user.name?.toLowerCase().includes(search.toLowerCase()) ||
+    user.email?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -41,38 +63,44 @@ export default function UsersManagement() {
 
       {/* Users Table */}
       <div className="bg-white shadow-sm rounded-md p-4">
-        <Table>
-          <thead className="border-b">
-            <tr>
-              <th className="py-2 px-4 text-left text-gray-600">Name</th>
-              <th className="py-2 px-4 text-left text-gray-600">Email</th>
-              <th className="py-2 px-4 text-left text-gray-600">Active Policies</th>
-              <th className="py-2 px-4 text-left text-gray-600">Status</th>
-              <th className="py-2 px-4 text-left text-gray-600">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredUsers.map((user) => (
-              <tr key={user.id} className="hover:bg-gray-100 transition-colors">
-                <td className="py-2 px-4">{user.name}</td>
-                <td className="py-2 px-4">{user.email}</td>
-                <td className="py-2 px-4">{user.policies.join(", ")}</td>
-                <td className={`py-2 px-4 ${user.status === "active" ? "text-green-500" : "text-red-500"}`}>
-                  {user.status}
-                </td>
-                <td className="py-2 px-4">
-                  <Button
-                    onClick={() => toggleBlockUser(user.id)}
-                    className="flex items-center space-x-2"
-                  >
-                    {user.status === "active" ? <Lock size={16} /> : <Unlock size={16} />}
-                    <span>{user.status === "active" ? "Block" : "Unblock"}</span>
-                  </Button>
-                </td>
+        {loading ? (
+          <p className="text-gray-500">Loading users...</p>
+        ) : (
+          <Table>
+            <thead className="border-b">
+              <tr>
+                <th className="py-2 px-4 text-left text-gray-600">Name</th>
+                <th className="py-2 px-4 text-left text-gray-600">Email</th>
+                <th className="py-2 px-4 text-left text-gray-600">Active Policies</th>
+                <th className="py-2 px-4 text-left text-gray-600">Status</th>
+                <th className="py-2 px-4 text-left text-gray-600">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user) => (
+                <tr key={user._id} className="hover:bg-gray-100 transition-colors">
+                  <td className="py-2 px-4">{user.name}</td>
+                  <td className="py-2 px-4">{user.email}</td>
+                  <td className="py-2 px-4">
+                    {user.policies?.map((p) => p.planName).join(", ") || "None"}
+                  </td>
+                  <td className={`py-2 px-4 ${user.status === "active" ? "text-green-500" : "text-red-500"}`}>
+                    {user.status}
+                  </td>
+                  <td className="py-2 px-4">
+                    <Button
+                      onClick={() => handleToggleStatus(user._id)}
+                      className="flex items-center space-x-2"
+                    >
+                      {user.status === "active" ? <Lock size={16} /> : <Unlock size={16} />}
+                      <span>{user.status === "active" ? "Block" : "Unblock"}</span>
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </div>
     </div>
   );

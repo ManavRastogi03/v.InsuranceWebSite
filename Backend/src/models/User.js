@@ -48,6 +48,17 @@ const userSchema = new mongoose.Schema(
       enum: ["Male", "Female", "Other"],
       required: [true, "Gender is required"],
     },
+    // 🆕 User Status Field
+    status: {
+      type: String,
+      enum: ["active", "blocked"],
+      default: "active",
+    },
+    // 🆕 Purchased Policies Array
+    policies: {
+      type: [String], // e.g. ["Basic", "Premium"]
+      default: [],
+    },
     role: {
       type: String,
       enum: ["user", "admin"],

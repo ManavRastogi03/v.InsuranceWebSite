@@ -1,24 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Pencil, Trash, Plus } from "lucide-react"; // Icons
+import { Pencil, Trash, Plus } from "lucide-react";
 import Button from "../../Component/ui/Button";
 import Table from "../../Component/ui/Table";
 import Modal from "../../Component/ui/Modal";
+import { getAllPolicies, deletePolicy } from "../../../api/api.js"; // ✅ Import API calls
 
 const Policies = () => {
   const navigate = useNavigate();
-  const [policies, setPolicies] = useState([
-    { id: 1, name: "Health Insurance", type: "Medical", premium: "₹500/year" },
-    { id: 2, name: "Car Insurance", type: "Vehicle", premium: "₹300/year" },
-    { id: 3, name: "Life Insurance", type: "Life", premium: "₹700/year" },
-  ]);
-
+  const [policies, setPolicies] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [policyToDelete, setPolicyToDelete] = useState(null);
 
-  const handleDelete = (id) => {
-    setPolicies(policies.filter((policy) => policy.id !== id));
-    setModalOpen(false);
+  // ✅ Fetch policies on component mount
+  useEffect(() => {
+    const fetchPolicies = async () => {
+      try {
+        const res = await getAllPolicies(); // API call
+        console.log("✅ Fetched Policies:", res);
+        setPolicies(res.data); // adjust this based on your response structure
+        console.log("Policies Data ➡️", res.data);
+
+      } catch (error) {
+        console.error("❌ Failed to fetch policies:", error.response || error.message || error);
+      }
+    };
+    
+
+    fetchPolicies();
+  }, []);
+
+  // ✅ Delete policy from DB
+  const handleDelete = async (id) => {
+    try {
+      await deletePolicy(id);
+      setPolicies((prev) => prev.filter((p) => p._id !== id)); // Remove from UI
+      setModalOpen(false);
+    } catch (error) {
+      console.error("❌ Failed to delete policy:", error.message);
+    }
   };
 
   return (
@@ -46,29 +66,24 @@ const Policies = () => {
           </tr>
         </thead>
         <tbody>
+        
           {policies.map((policy, index) => (
             <tr
-              key={policy.id}
+              key={policy._id}
               className={`text-gray-600 border-b ${
                 index % 2 === 0 ? "bg-white" : "bg-gray-100"
               } hover:bg-gray-200 transition-all`}
             >
               <td className="p-3 border">{policy.name}</td>
               <td className="p-3 border">{policy.type}</td>
-              <td className="p-3 border">{policy.premium}</td>
+              <td className="p-3 border">{policy.premiumPrice}</td>
               <td className="p-3 flex justify-center gap-3 border">
-                <Button
-                  variant="primary"
-                  className="flex items-center gap-2"
-                  onClick={() => navigate(`/admin/edit-policy/${policy.id}`)}
-                >
-                  <Pencil size={16} /> Edit
-                </Button>
+
                 <Button
                   variant="destructive"
                   className="flex items-center gap-2"
                   onClick={() => {
-                    setPolicyToDelete(policy.id);
+                    setPolicyToDelete(policy._id);
                     setModalOpen(true);
                   }}
                 >

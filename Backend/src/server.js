@@ -12,6 +12,9 @@ import profileRoutes from "./routes/profileRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import  userRouter from "./routes/userRoutes.js";  // Import user registration routes
 import insuranceRoutes from "./routes/insuranceRoutes.js";
+import PlanRoutes from "./routes/insurancePlanRoutes.js"
+import adminRoutes from "./routes/adminRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js"
 // Initialize Express app
 const app = express();
 
@@ -32,6 +35,9 @@ app.use("/api/user", userRouter);  // Register the user routes here
 app.use("/api/profile", profileRoutes);
 // 🔹 Insurance Plans Routes
 app.use("/api/insurance", insuranceRoutes);
+app.use("/api/plan",PlanRoutes);
+app.use("/api/admin",adminRoutes);
+app.use("/api/notifications", notificationRoutes);
 // app.use("/api/insurance", insuranceRouter)
 // Default Route
 app.get("/", (req, res) => {

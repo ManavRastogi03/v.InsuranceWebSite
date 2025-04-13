@@ -134,3 +134,85 @@ export const deleteInsuranceCompany = async (companyId) => {
       throw new Error(error.response?.data?.message || "Failed to delete company");
   }
 };
+// 🛠️ Create Policy API Call
+export const createPlan = async (policyData) => {
+    try {
+      const response = await API.post("/api/insurance/admin/createinsurance", policyData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // 🔑 Add Token
+        },
+      });
+  
+      console.log("✅ Policy Created:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("❌ API Error (createPlan):", error.response?.data || error.message);
+      throw new Error(error.response?.data?.message || "Failed to create policy");
+    }
+  };
+  // ✅ Get All Insurance Policies (GET)
+  export const getAllPolicies = async () => {
+    try {
+      const response = await API.get("/api/plan", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+  
+      console.log("✅ Fetched Policies:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("❌ API Error (getAllPolicies):", error.response?.data || error.message);
+      throw new Error(error.response?.data?.message || "Failed to fetch policies");
+    }
+  };
+  
+  
+// ✅ Delete Insurance Policy (DELETE)
+export const deletePolicy = async (policyId) => {
+    try {
+      const response = await API.delete(`/api/plan/admin/deleteinsurance/${policyId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // 🔑 Token for authentication
+        },
+      });
+  
+      console.log("✅ Policy Deleted:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("❌ API Error (deletePolicy):", error.response?.data || error.message);
+      throw new Error(error.response?.data?.message || "Failed to delete policy");
+    }
+  };
+  
+  // ✅ Fetch All Users with Policies (Admin)
+export const getAllUsers = async () => {
+  try {
+    const response = await API.get("/api/admin/users", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // 🔐 Auth Token
+      },
+    });
+    console.log("✅ All Users Fetched:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("❌ API Error (getAllUsers):", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Failed to fetch users");
+  }
+};
+
+// 🔁 Toggle User Status (Active <-> Blocked)
+export const toggleUserStatus = async (userId) => {
+  try {
+    const response = await API.patch(`/api/admin/users/${userId}/status`, {}, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // 🔐 Auth Token
+      },
+    });
+    console.log("🔁 User Status Toggled:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("❌ API Error (toggleUserStatus):", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Failed to toggle user status");
+  }
+};

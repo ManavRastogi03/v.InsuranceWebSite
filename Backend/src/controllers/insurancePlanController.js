@@ -161,3 +161,20 @@ export const getUserSubscriptions = async (req, res) => {
     res.status(500).json({ message: "Error fetching subscriptions", error: error.message });
   }
 };
+export const getPlans = async (req, res) => {
+  try {
+    const plans = await InsurancePlan.find();
+    res.status(200).json({
+      success: true,
+      message: "Insurance plans fetched successfully.",
+      data: plans,
+    });
+  } catch (error) {
+    console.error("Error fetching plans:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch insurance plans.",
+      error: error.message,
+    });
+  }
+};

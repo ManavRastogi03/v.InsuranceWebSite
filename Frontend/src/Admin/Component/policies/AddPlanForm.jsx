@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { X } from "lucide-react"; // Importing an icon
+import { X } from "lucide-react";
 import Input from "../ui/Input.jsx";
 import Button from "../ui/Button.jsx";
+import { createPlan } from "../../../api/api.js"; // 👈 Import your API call
+import { toast } from "react-toastify"; // ✅ Toast for feedback
 
-const AddPlanForm = ({ onSubmit }) => {
+const AddPlanForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -55,14 +57,19 @@ const AddPlanForm = ({ onSubmit }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    try {
+      await createPlan(formData); // 👈 Call API
+      toast.success("🎉 Plan created successfully!");
+      navigate("/admin/policies"); // ✅ Redirect
+    } catch (error) {
+      toast.error("❌ Failed to create plan. Try again.");
+    }
   };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-xl w-full max-w-lg relative">
-      {/* Improved Cross Button */}
       <button
         onClick={() => navigate("/admin/policies")}
         className="absolute top-4 right-4 p-2 bg-gray-200 hover:bg-red-500 hover:text-white rounded-full transition-all duration-300 shadow-md"
