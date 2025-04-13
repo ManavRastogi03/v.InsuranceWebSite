@@ -5,12 +5,12 @@ import { useFormData } from "../Context/FormDataContext.jsx";
 import Label from "../ui/Label.jsx";
 import Button from "../ui/Button.jsx";
 
-const MedicalHistoryForm = () => {
+const MedicalHistoryForm = ({ insuranceType }) => {
   const navigate = useNavigate();
   const { formData, updateFormData } = useFormData();
 
   const handleNext = () => {
-    navigate("/term/step4");
+    navigate(`/${insuranceType}/step4`);
   };
 
   return (

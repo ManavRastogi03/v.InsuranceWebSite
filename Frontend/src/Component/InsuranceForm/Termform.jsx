@@ -5,13 +5,14 @@ import Input from "../ui/Input.jsx";
 import Label from "../ui/Label.jsx";
 import Button from "../ui/Button.jsx";
 
-const TermInsuranceInfoForm = () => {
+const TermInsuranceInfoForm = ({ insuranceType }) => {
   const navigate = useNavigate();
   const { formData, updateFormData } = useFormData();
 
   const handleNext = () => {
-    navigate("/term/step3");
+    navigate(`/${insuranceType}/step3`);
   };
+
 
   return (
     <form className="grid gap-5">

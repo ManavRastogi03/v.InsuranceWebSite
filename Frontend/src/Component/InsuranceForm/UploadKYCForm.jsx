@@ -5,13 +5,14 @@ import Input from "../ui/Input.jsx";
 import Label from "../ui/Label.jsx";
 import Button from "../ui/Button.jsx";
 
-const UploadsKYCForm = () => {
+const UploadsKYCForm = ({ insuranceType }) => {
   const navigate = useNavigate();
   const { formData, updateFormData } = useFormData();
 
   const handleNext = () => {
-    navigate("/term/step6");
+    navigate(`/${insuranceType}/step6`);
   };
+
 
   const handleFileChange = (field) => (e) => {
     const file = e.target.files[0];

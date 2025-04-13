@@ -27,11 +27,26 @@ import UserPolicies from "../User/Component/UserPolicies/Userpolicies.jsx";
 import Help from "../User/Component/Help/HelpCenter.jsx";
 import UserClaims from "../User/Component/Claims/UserClaims.jsx";
 import UserPayments from "../User/Component/Payments/UserPayments.jsx";
-import Step2 from "../Component/LifeInsurance/LifeStep2.jsx"
-import Step3 from "../Component/InsuranceForm/MedicalHistoryForm.jsx"
-import Step4 from "../Component/InsuranceForm/NomineeForm.jsx"
-import Step5 from "../Component/InsuranceForm/UploadKYCForm.jsx"
-import Step6 from "../Component/InsuranceForm/ReviewPayment.jsx"
+import LifeStep2 from "../Component/LifeInsurance/LifeStep2.jsx";
+import LifeStep3 from "../Component/LifeInsurance/LifeStep3.jsx";
+import LifeStep4 from "../Component/LifeInsurance/LifeStep4.jsx";
+import LifeStep5 from "../Component/LifeInsurance/LifeStep5.jsx";
+import LifeStep6 from "../Component/LifeInsurance/LifeStep6.jsx";
+import TravelStep2 from "../Component/TravelInsurance/TravelStep2.jsx";
+import TravelStep3 from "../Component/TravelInsurance/TravelStep3.jsx";
+import TravelStep4 from "../Component/TravelInsurance/TravelStep4.jsx";
+import TravelStep5 from "../Component/TravelInsurance/TravelStep5.jsx";
+import TravelStep6 from "../Component/TravelInsurance/TravelStep6.jsx";
+import BusinessStep2 from "../Component/BusinessInsurance/business2.jsx";
+import BusinessStep3 from "../Component/BusinessInsurance/business3.jsx";
+import BusinessStep4 from "../Component/BusinessInsurance/business4.jsx";
+import BusinessStep5 from "../Component/BusinessInsurance/business5.jsx";
+import BusinessStep6 from "../Component/BusinessInsurance/business6.jsx";
+import TermStep2 from "../Component/TermInsurance/TermStep2.jsx";
+import TermStep3 from "../Component/TermInsurance/TermStep3.jsx";
+import TermStep4 from "../Component/TermInsurance/TermStep4.jsx";
+import TermStep5 from "../Component/TermInsurance/TermStep5.jsx";
+import TermStep6 from "../Component/TermInsurance/TermStep6.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
@@ -39,26 +54,42 @@ const router = createBrowserRouter(
       <Route path="" element={<Home />} />
       <Route path="/car-insurance" element={<CarInsurance />} />
       <Route path="/life-insurance" element={<LifeInsurance />} />
-      <Route path="/life-insurance/step2" element={<Step2 />} />
-      <Route path="/life-insurance/step3" element={<Step3 />} />
-      <Route path="/life-insurance/step4" element={<Step4 />} />
-      <Route path="/life-insurance/step5" element={<Step5 />} />
-      <Route path="/life-insurance/step6" element={<Step6 />} />
+      <Route path="/life-insurance/step2" element={<LifeStep2/>} />
+      <Route path="/life-insurance/step3" element={<LifeStep3/>} />
+      <Route path="/life-insurance/step4" element={<LifeStep4 />} />
+      <Route path="/life-insurance/step5" element={<LifeStep5 />} />
+      <Route path="/life-insurance/step6" element={<LifeStep6/>} />
 
 
       <Route path="/travel-insurance" element={<TravelInsurance />} />
+      <Route path="/travel-insurance/step2" element={<TravelStep2/>} />
+      <Route path="/travel-insurance/step3" element={<TravelStep3/>} />
+      <Route path="/travel-insurance/step4" element={<TravelStep4 />} />
+      <Route path="/travel-insurance/step5" element={<TravelStep5 />} />
+      <Route path="/travel-insurance/step6" element={<TravelStep6/>} />
+
+
+
       <Route path="/bike-insurance" element={<BikeInsurance />} />
 
 
 
       <Route path="/term-insurance" element={<TermInsurance />} />
-      <Route path="/term-insurance/step2" element={<Step2 />} />
-      <Route path="/term-insurance/step3" element={<Step3 />} />
-      <Route path="/term-insurance/step4" element={<Step4 />} />
-      <Route path="/term-insurance/step5" element={<Step5 />} />
-      <Route path="/term-insurance/step6" element={<Step6 />} />
+      <Route path="/term-insurance/step2" element={<TermStep2 />} />
+      <Route path="/term-insurance/step3" element={<TermStep3 />} />
+      <Route path="/term-insurance/step4" element={<TermStep4 />} />
+      <Route path="/term-insurance/step5" element={<TermStep5 />} />
+      <Route path="/term-insurance/step6" element={<TermStep6 />} />
 
       <Route path="/business-insurance" element={<BusinessInsurance />} />
+      <Route path="/business-insurance/step2" element={<BusinessStep2/>} />
+      <Route path="/business-insurance/step3" element={<BusinessStep3/>} />
+      <Route path="/business-insurance/step4" element={<BusinessStep4 />} />
+      <Route path="/business-insurance/step5" element={<BusinessStep5 />} />
+      <Route path="/business-insurance/step6" element={<BusinessStep6/>} />
+
+
+
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/health-insurance/:type" element={<Healthinsurance />} />

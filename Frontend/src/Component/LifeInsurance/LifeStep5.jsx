@@ -1,14 +1,14 @@
 import React from "react";
 import FormPageLayout from "../layout/FormPageLayout.jsx";
-import MedicalHistoryForm from "../InsuranceForm/MedicalHistoryForm.jsx";
+import UploadKYCForm from "../InsuranceForm/UploadKYCForm.jsx";
 import lifeImage from "../../Image/Lifeinsurance.png";
 
-const LifeStep3 = () => {
+const LifeStep5 = () => {
   return (
     <FormPageLayout title="Life Insurance" image={lifeImage}>
-      <MedicalHistoryForm insuranceType="Life-insurance"  />
+      <UploadKYCForm insuranceType="Life-insurance" />
     </FormPageLayout>
   );
 };
 
-export default LifeStep3;
+export default LifeStep5;

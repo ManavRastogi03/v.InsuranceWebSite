@@ -1,12 +1,12 @@
 import React from "react";
 import FormPageLayout from "../layout/FormPageLayout.jsx";
-import LifeInsuranceDetailsForm from "../InsuranceForm/TermInfoForm.jsx";
+import LifeInsuranceDetailsForm from "../InsuranceForm/Termform.jsx";
 import lifeImage from "../../Image/Lifeinsurance.png";
 
 const LifeStep2 = () => {
   return (
     <FormPageLayout title="Life Insurance" image={lifeImage}>
-      <LifeInsuranceDetailsForm />
+      <LifeInsuranceDetailsForm insuranceType="Life-insurance"  />
     </FormPageLayout>
   );
 };
