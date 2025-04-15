@@ -216,3 +216,30 @@ export const toggleUserStatus = async (userId) => {
     throw new Error(error.response?.data?.message || "Failed to toggle user status");
   }
 };
+export const submitInsuranceForm = async (formData) => {
+  try {
+    const payload = new FormData();
+
+    // 🔁 Loop through all fields (including files)
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value) {
+        payload.append(key, value);
+      }
+    });
+
+    const response = await API.post("/api/insurance/submit", payload, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    console.log("✅ Insurance Form Submitted:", response.data);
+    return response.data;
+  } catch (error) {
+    console.log("📦 formData before submission:", formData);
+    console.error("API Response:", error.response?.data);
+    console.error("Error Message:", error.response?.data?.message || error.message);    
+    console.error("❌ API Error (submitInsuranceForm):", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Failed to submit insurance form");
+  }
+};

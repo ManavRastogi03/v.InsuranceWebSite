@@ -1,8 +1,8 @@
-
 import React, { createContext, useContext, useState } from "react";
 
 const FormDataContext = createContext();
 
+// 🔁 Hook to use form context easily
 export const useFormData = () => useContext(FormDataContext);
 
 export const FormDataProvider = ({ children }) => {
@@ -13,18 +13,19 @@ export const FormDataProvider = ({ children }) => {
     gender: "",
     mobile: "",
     email: "",
+    insuranceType: "",
 
-    // Step 2: Term Insurance Info
+    // Step 2: Term Info
     smoker: "",
     income: "",
     sumAssured: "",
 
-    // Step 3: Medical History
+    // Step 3: Medical
     hasMedicalCondition: false,
     isOnMedication: false,
     hospitalizationHistory: "",
 
-    // Step 4: Nominee
+    // Step 4: Nominee Info
     nomineeName: "",
     nomineeRelation: "",
     nomineeDob: "",
@@ -35,16 +36,43 @@ export const FormDataProvider = ({ children }) => {
     policyCopy: null,
     photo: null,
 
-    // Step 6: For Review
+    // Step 6: Confirmation
     confirmed: false,
   });
 
+  // ➕ Update any field
   const updateFormData = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  // 🔄 Reset all fields
+  const resetFormData = () => {
+    setFormData({
+      fullName: "",
+      dob: "",
+      gender: "",
+      mobile: "",
+      email: "",
+      insuranceType: "",
+      smoker: "",
+      income: "",
+      sumAssured: "",
+      hasMedicalCondition: false,
+      isOnMedication: false,
+      hospitalizationHistory: "",
+      nomineeName: "",
+      nomineeRelation: "",
+      nomineeDob: "",
+      aadhaar: null,
+      pan: null,
+      policyCopy: null,
+      photo: null,
+      confirmed: false,
+    });
+  };
+
   return (
-    <FormDataContext.Provider value={{ formData, updateFormData }}>
+    <FormDataContext.Provider value={{ formData, updateFormData, resetFormData }}>
       {children}
     </FormDataContext.Provider>
   );

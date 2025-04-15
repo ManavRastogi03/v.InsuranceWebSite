@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import  Button from "../ui/Button.jsx";
-import  Table  from "../ui/Table.jsx"; // Assuming you already have these components
- // Assuming you already have these components
+import React, { useState } from "react";
+import Button from "../ui/Button.jsx";
+import Table from "../ui/Table.jsx";
+import Loader from "../../../Component/Loader/Loader.jsx"; // ✅ Import loader
 import { Lock, Unlock } from "lucide-react";
 
 const usersData = [
@@ -35,11 +35,18 @@ const NotificationPage = () => {
       setStatus("Notification sent successfully!");
       setMessage("");
       setRecipient("");
-    }, 2000); // Simulate API call
+    }, 2000); // Simulated API call
   };
 
   return (
-    <div className="p-6">
+    <div className="relative p-6">
+      {/* ✅ Loader Overlay */}
+      {loading && (
+        <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex justify-center items-center z-50">
+          <Loader />
+        </div>
+      )}
+
       <h2 className="text-xl font-bold mb-4">Send Notification</h2>
 
       {/* Notification Form */}
@@ -76,12 +83,11 @@ const NotificationPage = () => {
         </Button>
 
         {/* Status Feedback */}
-        {status && <p className="mt-4 text-red-500">{status}</p>}
+        {status && <p className="mt-4 text-green-600">{status}</p>}
       </div>
 
-      {/* Notification History Table */}
+      {/* Notification History */}
       <h3 className="text-lg font-semibold mb-4">Notification History</h3>
-
       <Table>
         <thead>
           <tr>
@@ -92,7 +98,6 @@ const NotificationPage = () => {
           </tr>
         </thead>
         <tbody>
-          {/* Example notification data, in real case it will be fetched from the backend */}
           <tr>
             <td>john@example.com</td>
             <td>Account successfully activated.</td>

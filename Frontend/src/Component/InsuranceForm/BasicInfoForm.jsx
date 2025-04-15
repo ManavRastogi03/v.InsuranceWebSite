@@ -4,16 +4,24 @@ import { useFormData } from "../Context/FormDataContext.jsx";
 import Input from "../ui/Input.jsx";
 import Label from "../ui/Label.jsx";
 import Button from "../ui/Button.jsx";
-const BasicInfoForm = ({ insuranceType }) => {
+
+const BasicInfoForm = ({insuranceType}) => {
   const navigate = useNavigate();
   const { formData, updateFormData } = useFormData();
 
-  const handleNext = () => {
+  const handleNext = (e) => {
+    e.preventDefault();
+
+    if (!formData.fullName || !formData.mobile || !formData.insuranceType) {
+      alert("Please fill all required fields before proceeding.");
+      return;
+    }
+
     navigate(`/${insuranceType}/step2`);
   };
 
   return (
-    <form className="grid gap-5">
+    <form className="grid gap-5" onSubmit={handleNext}>
       <div>
         <Label htmlFor="fullName">Full Name</Label>
         <Input
@@ -76,8 +84,28 @@ const BasicInfoForm = ({ insuranceType }) => {
         />
       </div>
 
+      <div>
+        <Label htmlFor="insuranceType">Insurance Type</Label>
+        <select
+          id="insuranceType"
+          name="insuranceType"
+          value={formData.insuranceType}
+          onChange={(e) => updateFormData("insuranceType", e.target.value)}
+          className="w-full px-4 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          <option value="">Select Insurance Type</option>
+          <option value="term">Term</option>
+          <option value="life">Life</option>
+          <option value="health">Health</option>
+          <option value="car">Car</option>
+          <option value="bike">Bike</option>
+          <option value="travel">Travel</option>
+          <option value="business">Business</option>
+        </select>
+      </div>
+
       <div className="flex justify-end pt-4">
-        <Button onClick={handleNext}>Next</Button>
+        <Button type="submit">Next</Button>
       </div>
     </form>
   );
