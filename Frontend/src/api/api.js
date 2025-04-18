@@ -243,3 +243,37 @@ export const submitInsuranceForm = async (formData) => {
     throw new Error(error.response?.data?.message || "Failed to submit insurance form");
   }
 };
+// ✅ Fetch Insurance Plans by Company ID
+export const fetchPlansByCompanyId = async (companyId) => {
+  try {
+    const response = await API.get(`/api/insurance/company/${companyId}/plans`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // 🔐 Auth Token
+      },
+    });
+
+    console.log("✅ Plans for Company:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("❌ API Error (fetchPlansByCompanyId):", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Failed to fetch plans");
+  }
+};
+// ✅ Fetch All Insurance Companies
+export const fetchCompanies = async () => {
+  try {
+    const response = await API.get("/api/insurance/companies", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+    console.log("✅ Companies Fetched:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error fetching companies:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Failed to fetch companies");
+  }
+};
+
+

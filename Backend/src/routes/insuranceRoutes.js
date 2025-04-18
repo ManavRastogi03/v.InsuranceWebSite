@@ -18,7 +18,7 @@ const router = express.Router();
 // router.get("/", getAllInsurancePlans);
 
 // ✅ Customer & Admin Both Can Access
-// router.get("/:id", authenticateUser, getInsurancePlanById);
+
 
 // ✅ Admin-Only APIs
 router.post("/admin/createinsurance", authenticateUser, authorizeAdmin, createInsurancePlan);

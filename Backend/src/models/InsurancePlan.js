@@ -44,7 +44,7 @@ const InsurancePlanSchema = new mongoose.Schema(
     eligibleMembers: {
       type: [String],
       required: true,
-      enum: ["Self", "Spouse", "Children", "Parents"],
+      enum: ["Self", "Spouse", "Children", "Parents","Family Plans","Senior Citizen","For Parents","Women Insurance","Children Insurance"],
     },
     features: {
       type: [String], // ✅ List of features for better readability

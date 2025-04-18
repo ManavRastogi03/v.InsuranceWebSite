@@ -163,7 +163,21 @@ export const getUserSubscriptions = async (req, res) => {
 };
 export const getPlans = async (req, res) => {
   try {
-    const plans = await InsurancePlan.find();
+    const { type, eligible } = req.query;
+
+    // 🔍 Create a filter object dynamically
+    const query = {};
+
+    if (type) {
+      query.type = type;
+    }
+
+    if (eligible) {
+      query.eligibleMembers = eligible;
+    }
+
+    const plans = await InsurancePlan.find(query);
+
     res.status(200).json({
       success: true,
       message: "Insurance plans fetched successfully.",
@@ -178,3 +192,18 @@ export const getPlans = async (req, res) => {
     });
   }
 };
+  
+// ✅ Fetch a Specific Insurance Plan by ID
+export const getInsurancePlanById = async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      // 🔍 Find plan by ID
+      const plan = await InsurancePlan.findById(id);
+      if (!plan) return res.status(404).json({ success: false, message: "Insurance plan not found" });
+  
+      res.status(200).json({ success: true, plan });
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Error fetching insurance plan", error: error.message });
+    }
+  };

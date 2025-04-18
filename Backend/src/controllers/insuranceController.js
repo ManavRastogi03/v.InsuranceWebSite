@@ -15,21 +15,7 @@ import InsuranceForm from "../models/InsuranceForm.js";
 //       res.status(500).json({ success: false, message: "Error fetching insurance plans", error: error.message });
 //     }
 //   };
-  
-// // ✅ Fetch a Specific Insurance Plan by ID
-// export const getInsurancePlanById = async (req, res) => {
-//     try {
-//       const { id } = req.params;
-  
-//       // 🔍 Find plan by ID
-//       const plan = await InsurancePlan.findById(id);
-//       if (!plan) return res.status(404).json({ success: false, message: "Insurance plan not found" });
-  
-//       res.status(200).json({ success: true, plan });
-//     } catch (error) {
-//       res.status(500).json({ success: false, message: "Error fetching insurance plan", error: error.message });
-//     }
-//   };
+
 export const submitForm = async (req, res) => {
   try {
     const formData = req.body;
