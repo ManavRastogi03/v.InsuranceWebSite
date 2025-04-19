@@ -1,15 +1,15 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import healthLogo from '../../Image/health.png'; // Replace with your logo paths
+import healthLogo from '../../assets/health.png'; // Replace with your logo paths
 import { useEffect } from "react";
-import carLogo from '../../Image/car.png';
-import lifeLogo from '../../Image/life.png';
-import termLogo from '../../Image/term.png';
-import bikeLogo from '../../Image/bike.png';
-import businessLogo from '../../Image/business.png';
+import carLogo from '../../assets/car.png';
+import lifeLogo from '../../assets/life.png';
+import termLogo from '../../assets/term.png';
+import bikeLogo from '../../assets/bike.png';
+import businessLogo from '../../assets/business.png';
 import { useNavigate } from "react-router-dom";
-import travelLogo from '../../Image/travel.png';
-import claimImage from '../../Image/claim.png'; // Replace with your claim image
+import travelLogo from '../../assets/travel.png';
+import claimImage from '../../assets/claim.png'; // Replace with your claim image
 
 function Home() {
   const navigate = useNavigate();

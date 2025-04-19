@@ -1,7 +1,7 @@
 import React from "react";
 import FormPageLayout from "../layout/FormPageLayout.jsx";
 import LifeInsuranceDetailsForm from "../InsuranceForm/Termform.jsx";
-import TermInsuranceImage from  "../../Image/Terminsurance.png"
+import TermInsuranceImage from  "../../assets/Terminsurance.png"
 
 const TermStep2 = () => {
   return (

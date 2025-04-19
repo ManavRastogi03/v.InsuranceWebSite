@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import logo from "../../Image/I.png";
+import logo from "../../assets/I.png";
 
 export default function Header() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);

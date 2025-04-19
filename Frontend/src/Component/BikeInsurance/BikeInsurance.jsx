@@ -1,6 +1,6 @@
 import React from 'react';
 import InsuranceForm from '../InsuranceForm/InsuranceForm.jsx';
-import bikeImage from '../../Image/BikeImage.png'; // Replace with your actual bike insurance image path
+import bikeImage from '../../assets/BikeImage.png'; // Replace with your actual bike insurance image path
 import BikeInsuranceCalculator from './BikeInsuranceCal';
 
 function BikeInsurance() {

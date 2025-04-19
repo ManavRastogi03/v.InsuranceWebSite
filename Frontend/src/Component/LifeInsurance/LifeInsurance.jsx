@@ -1,7 +1,7 @@
 import React from 'react';
 import FormPageLayout from '../layout/FormPageLayout.jsx';
 import BasicInfoForm from '../InsuranceForm/BasicInfoForm';
-import lifeInsuranceImage from '../../Image/Lifeinsurance.png'; // or from public folder
+import lifeInsuranceImage from '../../assets/Lifeinsurance.png'; // or from public folder
 
 const LifeInsurance = () => {
   return (

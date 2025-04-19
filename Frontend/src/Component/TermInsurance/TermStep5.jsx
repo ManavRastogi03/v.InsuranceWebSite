@@ -1,7 +1,7 @@
 import React from "react";
 import FormPageLayout from "../layout/FormPageLayout.jsx";
 import UploadKYCForm from "../InsuranceForm/UploadKYCForm.jsx";
-import TermInsuranceImage from  "../../Image/Terminsurance.png"
+import TermInsuranceImage from  "../../assets/Terminsurance.png"
 
 const TermStep5 = () => {
   return (

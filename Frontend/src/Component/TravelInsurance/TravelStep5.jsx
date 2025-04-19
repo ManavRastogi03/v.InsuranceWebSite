@@ -1,7 +1,7 @@
 import React from "react";
 import FormPageLayout from "../layout/FormPageLayout.jsx";
 import UploadKYCForm from "../InsuranceForm/UploadKYCForm.jsx";
-import TravelInsuranceImage from '../../Image/TravelInsurance.png'
+import TravelInsuranceImage from '../../assets/TravelInsurance.png'
 
 const TravelStep5 = () => {
   return (

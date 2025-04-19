@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { loginUser } from '../../api/api';
-import illustration from '../../Image/LoginImage.png';
+import illustration from '../../assets/LoginImage.png';
 import { Link, useNavigate } from 'react-router-dom';
 import  Loader  from '../Loader/Loader.jsx';
 function LoginPage() {

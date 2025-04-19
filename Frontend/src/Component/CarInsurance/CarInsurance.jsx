@@ -1,5 +1,5 @@
 import React from 'react';
-import CarImage from '../../Image/CarInsuranceImage.png'; // Replace with your actual bike insurance image path
+import CarImage from '../../assets/CarInsuranceImage.png'; // Replace with your actual bike insurance image path
 import CarInsurancecal from './CarInsurancecal';
 
 function CarInsurance() {

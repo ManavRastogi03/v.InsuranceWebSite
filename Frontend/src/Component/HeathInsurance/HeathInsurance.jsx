@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import InsuranceForm from '../InsuranceForm/InsuranceForm.jsx';
-import healthInsuranceImage from "../../Image/Healthinsurance.png";
+import healthInsuranceImage from "../../assets/Healthinsurance.png";
 
 function HealthInsurance() {
   const { type } = useParams();

@@ -1,7 +1,7 @@
 import React from "react";
 import FormPageLayout from "../layout/FormPageLayout.jsx";
 import MedicalHistoryForm from "../InsuranceForm/MedicalHistoryForm.jsx";
-import BussinessInsuranceImage from '../../Image/businessinsurance.png';
+import BussinessInsuranceImage from '../../assets/businessinsurance.png';
 
 const BusinessStep3 = () => {
   return (

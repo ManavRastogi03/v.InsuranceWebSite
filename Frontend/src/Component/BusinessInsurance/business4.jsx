@@ -1,7 +1,7 @@
 import React from "react";
 import FormPageLayout from "../layout/FormPageLayout.jsx";
 import NomineeForm from "../InsuranceForm/NomineeForm.jsx";
-import BussinessInsuranceImage from '../../Image/businessinsurance.png';
+import BussinessInsuranceImage from '../../assets/businessinsurance.png';
 
 const BusinessStep4 = () => {
   return (
