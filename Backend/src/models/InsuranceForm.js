@@ -82,6 +82,12 @@ const InsuranceFormSchema = new mongoose.Schema(
     photo: {
       type: String,
     },
+    planId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "InsurancePlan",
+      required: true,
+    },
+
 
     // Step 6: Confirmation
     confirmed: {

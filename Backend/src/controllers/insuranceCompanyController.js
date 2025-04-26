@@ -1,5 +1,7 @@
 import InsuranceCompany from "../models/InsuranceCompany.js";
 import cloudinary from "../config/cloudinaryConfig.js";
+import mongoose from "mongoose";
+
 
 export const createInsuranceCompany = async (req, res) => {
   try {
@@ -11,16 +13,22 @@ export const createInsuranceCompany = async (req, res) => {
       return res.status(400).json({ message: "All fields are required!" });
     }
 
-    // ✅ Convert insurancePlans (Check if it's a valid JSON array)
-    let parsedPlans;
-    try {
-      parsedPlans = JSON.parse(insurancePlans);
-      if (!Array.isArray(parsedPlans) || parsedPlans.length === 0) {
-        return res.status(400).json({ message: "At least one insurance plan is required!" });
+      // ✅ Step 1: Parse insurancePlans safely
+      let parsedPlans;
+      try {
+        parsedPlans = JSON.parse(insurancePlans);
+        if (!Array.isArray(parsedPlans) || parsedPlans.length === 0) {
+          return res.status(400).json({ message: "At least one insurance plan is required!" });
+        }
+      } catch (err) {
+        return res.status(400).json({ message: "Invalid format for insurance plans!" });
       }
-    } catch (err) {
-      return res.status(400).json({ message: "Invalid format for insurance plans!" });
-    }
+
+      // ✅ Step 2: Validate ObjectIds
+      const invalidIds = parsedPlans.filter(id => !mongoose.Types.ObjectId.isValid(id));
+      if (invalidIds.length > 0) {
+        return res.status(400).json({ message: "Invalid Plan IDs provided!", invalidIds });
+      }
 
     let companyLogo = "https://asset.cloudinary.com/duj6tm4qi/c4692e8823e8343c9e21d8f0d00652b7"; // ✅ Default logo if no file is uploaded
 
@@ -60,7 +68,7 @@ export const createInsuranceCompany = async (req, res) => {
 
 export const getCompanies = async (req, res) => {
   try {
-    const companies = await InsuranceCompany.find().select("companyName companyLogo contactNumber insurancePlans createdAt");
+    const companies = await InsuranceCompany.find().select("companyName companyLogo contactNumber createdAt");
 
     if (!companies.length) {
       return res.status(404).json({ success: false, message: "No companies found" });
@@ -97,3 +105,72 @@ export const deleteInsuranceCompany = async (req, res) => {
       });
   }
 };
+export const getCompaniesWithPlans = async (req, res) => {
+  try {
+    const companies = await InsuranceCompany.find()
+      .populate({
+        path: "insurancePlans",
+        match: { isDeleted: false }, // sirf active plans
+      })
+      .select("companyName companyLogo contactNumber insurancePlans createdAt");
+
+    if (!companies.length) {
+      return res.status(404).json({ success: false, message: "No companies found" });
+    }
+
+    res.status(200).json({ success: true, count: companies.length, data: companies });
+  } catch (error) {
+    console.error("Error fetching companies with plans:", error);
+    res.status(500).json({ success: false, message: "Server error, please try again later" });
+  }
+};
+export const getCompaniesByInsuranceType = async (req, res) => {
+  try {
+    const { type } = req.query;
+    console.log("Type received:", type);
+
+    if (!type) {
+      return res.status(400).json({ success: false, message: "Insurance type is required" });
+    }
+
+    const companies = await InsuranceCompany.find()
+      .populate("insurancePlans") // 👉 pehle saare plans le aao
+      .select("companyName companyLogo contactNumber insurancePlans");
+
+      const filteredCompanies = companies
+      .map(company => {
+        const plans = Array.isArray(company.insurancePlans) ? company.insurancePlans : [];
+    
+        const matchingPlans = plans.filter(
+          plan => plan.type.toLowerCase() === type.toLowerCase()
+        );
+    
+        if (matchingPlans.length > 0) {
+          return {
+            ...company.toObject(),
+            insurancePlans: matchingPlans
+          };
+        }
+    
+        return null;
+      })
+      .filter(company => company !== null);
+    
+
+    if (filteredCompanies.length === 0) {
+      return res.status(404).json({ success: false, message: "No companies found for this type" });
+    }
+
+    res.status(200).json({
+      success: true,
+      count: filteredCompanies.length,
+      data: filteredCompanies,
+    });
+  } catch (error) {
+    console.error("🔥 Error in getCompaniesByInsuranceType:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+
+

@@ -77,6 +77,12 @@ const InsurancePlanSchema = new mongoose.Schema(
       type: Boolean,
       default: false, // ✅ Soft delete functionality
     },
+    // companyId: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "InsuranceCompany", // 👈 This links to the company
+    //   required: true,
+    // },
+
     subscribedUsers: [
       {
         userId: {

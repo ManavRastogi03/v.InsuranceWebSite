@@ -8,6 +8,7 @@ export const useFormData = () => useContext(FormDataContext);
 export const FormDataProvider = ({ children }) => {
   const [formData, setFormData] = useState({
     // Step 1: Basic Info
+    planId: "",
     fullName: "",
     dob: "",
     gender: "",
@@ -48,6 +49,7 @@ export const FormDataProvider = ({ children }) => {
   // 🔄 Reset all fields
   const resetFormData = () => {
     setFormData({
+      planId: "",
       fullName: "",
       dob: "",
       gender: "",

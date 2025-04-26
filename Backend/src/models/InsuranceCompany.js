@@ -15,20 +15,17 @@ const insuranceCompanySchema = new mongoose.Schema(
     contactNumber: {
       type: String,
       required: true,
-      match: [/^\+?[1-9]\d{9,14}$/, "Please enter a valid contact number"], // Improved regex
+      match: [/^\+?[1-9]\d{9,14}$/, "Please enter a valid contact number"],
     },
-    insurancePlans: {
-      type: [String], // Array of plan names (Basic, Premium, etc.)
-      required: true,
-      validate: {
-        validator: function (plans) {
-          return Array.isArray(plans) && plans.length > 0;
-        },
-        message: "At least one insurance plan is required.",
+    // ✅ Optional: Instead of just names, reference actual plan docs if needed
+    insurancePlans: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "InsurancePlan",
       },
-    },
+    ],
   },
-  { timestamps: true } // Adds createdAt & updatedAt timestamps
+  { timestamps: true }
 );
 
 const InsuranceCompany = mongoose.model("InsuranceCompany", insuranceCompanySchema);

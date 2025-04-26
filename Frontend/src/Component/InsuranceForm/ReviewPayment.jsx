@@ -17,7 +17,7 @@ const ReviewPayment = () => {
 
       resetFormData(); // Clear context after submission
       navigate("/thank-you");
-    } catch (error) {
+    } catch (error) { 
       alert("❌ Submission failed: " + error.message);
     } finally {
       setLoading(false);

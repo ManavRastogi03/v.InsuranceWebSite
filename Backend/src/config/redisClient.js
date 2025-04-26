@@ -1,14 +1,14 @@
-// import { createClient } from "redis";
+import { createClient } from "redis";
 
-// const redisClient = createClient();
+const redisClient = createClient();
 
-// // 🛠️ Connect to Redis
-// redisClient.connect()
-//   .then(() => console.log("🔥 Redis Connected"))
-//   .catch((err) => console.error("❌ Redis Connection Error:", err));
+// 🛠️ Connect to Redis
+redisClient.connect()
+  .then(() => console.log("🔥 Redis Connected"))
+  .catch((err) => console.error("❌ Redis Connection Error:", err));
 
-// redisClient.on("error", (err) => console.error("❌ Redis Error:", err));
+redisClient.on("error", (err) => console.error("❌ Redis Error:", err));
 
-// export default redisClient;
-const redisClient = null;
 export default redisClient;
+// const redisClient = null;
+// export default redisClient;

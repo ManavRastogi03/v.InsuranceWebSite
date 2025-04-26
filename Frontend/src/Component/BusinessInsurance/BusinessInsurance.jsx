@@ -1,17 +1,30 @@
-import React from 'react';
-import FormPageLayout from '../layout/FormPageLayout.jsx';
-import BasicInfoForm from '../InsuranceForm/BasicInfoForm';
-import BussinessInsuranceImage from '../../assets/businessinsurance.png'; // or from public folder
+import React, { useState } from "react";
+import FormPageLayout from "../layout/FormPageLayout.jsx";
+import BasicInfoForm from "../InsuranceForm/BasicInfoForm";
+import BusinessInsuranceImage from "../../assets/businessinsurance.png";
+import FilteredCompanies from "../../User/Component/InsuranceCompanyCard/FilteredCompanies.jsx";
 
-const BussinessInsurance = () => {
+const LifeInsurance = () => {
+  const [selectedCompany, setSelectedCompany] = useState(null);
+
   return (
     <FormPageLayout
       title="Business Insurance"
-      image={BussinessInsuranceImage}
+      image={selectedCompany ? BusinessInsuranceImage : null} // ← ✨ Bas yeh
     >
-     <BasicInfoForm insuranceType="business-insurance" />
+      {selectedCompany ? (
+        <BasicInfoForm
+          insuranceType="business-insurance"
+          selectedCompany={selectedCompany}
+        />
+      ) : (
+        <FilteredCompanies
+          selectedType="Business Insurance"
+          onCompanySelect={(company) => setSelectedCompany(company)}
+        />
+      )}
     </FormPageLayout>
   );
 };
 
-export default BussinessInsurance;
+export default LifeInsurance;

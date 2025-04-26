@@ -10,7 +10,6 @@ const Profile = () => {
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
-    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -71,36 +70,25 @@ const Profile = () => {
     e.preventDefault();
   
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert("❌ New password and confirm password do not match");
+      alert("New password and confirm password do not match!");
       return;
     }
   
     try {
-      console.log("🔄 Sending request to update password...");
-      
-      const response = await updatePassword({
-        currentPassword: passwordData.currentPassword,
+      const payload = {
+        oldPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword,
-      });
+      };
   
-      console.log("✅ Password update response:", response);
-      alert("✅ Password updated successfully!");
-  
-      setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
-  
+      const response = await updatePassword(payload); // 🔄 API call
+      alert("Password updated successfully!");
     } catch (error) {
-      console.error("❌ Error updating password:", error);
-      console.log("🔍 Full error details:", error.response); // ✅ Debugging ke liye
-  
-      const errorMessage =
-        error.response?.data?.message ||  // ✅ Backend error message
-        error.response?.statusText ||    // ✅ HTTP status text
-        error.message ||                 // ✅ JavaScript error
-        "Unknown error occurred";        // ❌ Default error message
-  
-      alert("❌ Error updating password: " + errorMessage);
+      console.log(response);
+      
+      alert("Failed to update password: " + error.message);
     }
   };
+  
   
 
 

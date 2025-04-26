@@ -6,7 +6,7 @@ import {createInsurancePlan }from "../controllers/insurancePlanController.js"
 import { updateInsurancePlan } from "../controllers/insurancePlanController.js";
 import { subscribeToPlan } from "../controllers/insurancePlanController.js";
 import {getUserSubscriptions} from "../controllers/insurancePlanController.js"
-import { createInsuranceCompany } from "../controllers/insuranceCompanyController.js";
+import { createInsuranceCompany ,getCompaniesByInsuranceType,getCompaniesWithPlans} from "../controllers/insuranceCompanyController.js";
 import { getCompanies } from "../controllers/insuranceCompanyController.js";
 import {deleteInsuranceCompany} from "../controllers/insuranceCompanyController.js";
 import upload from "../middlewares/multer.js"; // ✅ Correct (Default Import)
@@ -48,5 +48,8 @@ router.post(
   createInsuranceCompany
 );
 router.get("/companies", getCompanies);
+router.get("/companies-with-plans", getCompaniesWithPlans);
+router.get("/companies/by-type", getCompaniesByInsuranceType);
+
 router.delete("/admin/deletecompany/:companyId", authenticateUser, authorizeAdmin, deleteInsuranceCompany);
 export default router;

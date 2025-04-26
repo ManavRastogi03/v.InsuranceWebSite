@@ -106,7 +106,7 @@ export const updatePassword = async (passwordData) => {
   // ✅ Fetch All Insurance Companies (GET)
 export const getCompanies = async () => {
   try {
-      const response = await API.get("api/insurance/companies", {
+      const response = await API.get("/api/insurance/companies", {
           headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`, // 🔑 Auth Token
           },
@@ -239,7 +239,9 @@ export const submitInsuranceForm = async (formData) => {
     console.log("📦 formData before submission:", formData);
     console.error("API Response:", error.response?.data);
     console.error("Error Message:", error.response?.data?.message || error.message);    
-    console.error("❌ API Error (submitInsuranceForm):", error.response?.data || error.message);
+    console.error("❌ API Error (submitInsuranceForm):", error.response?.data || error.message );
+    console.log(typeof formData.planId);
+    
     throw new Error(error.response?.data?.message || "Failed to submit insurance form");
   }
 };
@@ -259,21 +261,39 @@ export const fetchPlansByCompanyId = async (companyId) => {
     throw new Error(error.response?.data?.message || "Failed to fetch plans");
   }
 };
-// ✅ Fetch All Insurance Companies
-export const fetchCompanies = async () => {
+// ✅ Get Companies by Insurance Type
+export const getCompaniesByType = async (type) => {
   try {
-    const response = await API.get("/api/insurance/companies", {
+    const response = await API.get("/api/insurance/companies/by-type", {
+      params: { type },
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // 🔐 Auth Token
       },
     });
 
-    console.log("✅ Companies Fetched:", response.data);
+    console.log("✅ Companies Filtered by Type:", response.data);
     return response.data;
   } catch (error) {
-    console.error("❌ Error fetching companies:", error.response?.data || error.message);
-    throw new Error(error.response?.data?.message || "Failed to fetch companies");
+    console.error("❌ API Error (getCompaniesByType):", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Failed to fetch filtered companies");
   }
 };
+
+// ✅ Fetch All Insurance Companies
+// export const fetchCompanies = async () => {
+//   try {
+//     const response = await API.get("/api/insurance/companies", {
+//       headers: {
+//         Authorization: `Bearer ${localStorage.getItem("token")}`,
+//       },
+//     });
+
+//     console.log("✅ Companies Fetched:", response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.error("❌ Error fetching companies:", error.response?.data || error.message);
+//     throw new Error(error.response?.data?.message || "Failed to fetch companies");
+//   }
+// };
 
 

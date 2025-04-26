@@ -2,24 +2,25 @@ import React from "react";
 
 const FormPageLayout = ({ title, image, children }) => {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-10 px-4">
-      <div className="max-w-6xl w-full bg-white shadow-lg rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
-
-        {/* Left Side: Form Content */}
-        <div className="p-8 md:p-12">
-          <h2 className="text-3xl font-bold text-blue-700 mb-6">{title}</h2>
-          <div>{children}</div>
-
-        {/* Right Side: Dynamic Image */}
-        </div>
-        <div className="hidden md:block bg-gray-100">
-          <img
-            src={image}
-            alt={title + " Illustration"}
-            className="object-cover w-full h-full"
-          />
+    <div className="flex justify-center items-center px-4 py-8 min-h-screen">
+      <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-10">
+        
+        {/* Left Side - Form Section */}
+        <div className={`w-full ${image ? "lg:w-2/3" : "lg:w-3/4"} flex flex-col`}>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center lg:text-left">{title}</h1>
+          {children}
         </div>
 
+        {/* Right Side - Image Section */}
+        {image && (
+          <div className="hidden md:flex w-full lg:w-1/3 justify-center items-center">
+            <img
+              src={image}
+              alt="Illustration"
+              className="w-full max-w-xs sm:max-w-sm md:max-w-md object-contain"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
