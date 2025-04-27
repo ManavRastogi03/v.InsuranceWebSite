@@ -87,8 +87,11 @@ const InsuranceFormSchema = new mongoose.Schema(
       ref: "InsurancePlan",
       required: true,
     },
-
-
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", 
+      required: true,
+    },
     // Step 6: Confirmation
     confirmed: {
       type: Boolean,

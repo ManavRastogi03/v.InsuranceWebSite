@@ -69,10 +69,10 @@ export default function Header() {
                             onMouseEnter={() => toggleDropdown("insurance", true)}
                             onMouseLeave={() => toggleDropdown("insurance", false)}
                             menuItems={[
-                                { label: "Car Insurance", link: "/car-insurance" },
+                                // { label: "Car Insurance", link: "/car-insurance" },
                                 { label: "Life Insurance", link: "/life-insurance" },
                                 { label: "Term Insurance", link: "/term-insurance" },
-                                { label: "Bike Insurance", link: "/bike-insurance" },
+                                // { label: "Bike Insurance", link: "/bike-insurance" },
                                 { label: "Business Insurance", link: "/business-insurance" },
                                 { label: "Travel Insurance", link: "/travel-insurance" },
                             ]}
@@ -84,7 +84,7 @@ export default function Header() {
                                     { label: "For Parents", link: "/health-insurance/parents" },
                                     { label: "Women Insurance", link: "/health-insurance/women" },
                                     { label: "Children Insurance", link: "/health-insurance/children" },
-                                    { label: "Premium Calculator", link: "/health-insurance/calculator" },
+                                    { label: "Premium Calculator", link: "/Premium-calculator" },
                                 ],
                                 isOpen: dropdowns.healthInsurance,
                                 onMouseEnter: () => toggleDropdown("healthInsurance", true),

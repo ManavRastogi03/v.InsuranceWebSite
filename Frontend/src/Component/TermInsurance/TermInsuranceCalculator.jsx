@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import termInsuranceImage from "../../assets/calculator.png"; 
 
 function TermInsuranceCalculator() {
   const [formData, setFormData] = useState({
@@ -9,7 +10,6 @@ function TermInsuranceCalculator() {
 
   const [premium, setPremium] = useState(null);
 
-  // Function to handle form inputs
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -17,16 +17,14 @@ function TermInsuranceCalculator() {
     });
   };
 
-  // Basic premium calculation logic
   const calculatePremium = (age, coverageAmount, termLength) => {
-    const baseRate = 500; // base premium rate
-    const ageFactor = age > 30 ? (age - 30) * 20 : 0; // additional cost for age over 30
-    const termFactor = termLength * 10; // additional cost for each year of the term
-    const coverageFactor = (coverageAmount / 1000000) * 50; // cost per 1 crore of coverage
+    const baseRate = 500;
+    const ageFactor = age > 30 ? (age - 30) * 20 : 0;
+    const termFactor = termLength * 10;
+    const coverageFactor = (coverageAmount / 1000000) * 50;
     return baseRate + ageFactor + termFactor + coverageFactor;
   };
 
-  // Handle form submission and premium calculation
   const handleSubmit = (e) => {
     e.preventDefault();
     const { age, coverageAmount, termLength } = formData;
@@ -44,11 +42,20 @@ function TermInsuranceCalculator() {
         onSubmit={handleSubmit}
         className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md"
       >
+        {/* 👉 Yeh image upar add kar rahe hain */}
+        <div className="mb-6">
+          <img
+            src={termInsuranceImage}
+            alt="Term Insurance"
+            className="w-full rounded-lg"
+          />
+        </div>
+
         <h2 className="text-2xl font-semibold text-center mb-4">
           Term Insurance Calculator
         </h2>
 
-        {/* Age Input */}
+        {/* Rest form code same hai */}
         <div className="mb-4">
           <label className="text-gray-700 font-medium mb-2 block">Age</label>
           <input
@@ -62,7 +69,6 @@ function TermInsuranceCalculator() {
           />
         </div>
 
-        {/* Coverage Amount Input */}
         <div className="mb-4">
           <label className="text-gray-700 font-medium mb-2 block">
             Coverage Amount (in ₹ Lakhs)
@@ -78,7 +84,6 @@ function TermInsuranceCalculator() {
           />
         </div>
 
-        {/* Term Length Input */}
         <div className="mb-4">
           <label className="text-gray-700 font-medium mb-2 block">
             Term Length (in years)
@@ -94,7 +99,6 @@ function TermInsuranceCalculator() {
           />
         </div>
 
-        {/* Calculate Button */}
         <button
           type="submit"
           className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition duration-200"
@@ -102,7 +106,6 @@ function TermInsuranceCalculator() {
           Calculate Premium
         </button>
 
-        {/* Display Calculated Premium */}
         {premium && (
           <div className="mt-4 bg-green-100 p-4 rounded-lg text-center">
             <h3 className="text-xl font-semibold text-green-700">

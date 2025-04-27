@@ -25,10 +25,10 @@ function Home() {
   }, [navigate]);
   const insuranceTypes = [
     { name: 'Health Insurance', logo: healthLogo, path: '/health-insurance/family' },
-    { name: 'Car Insurance', logo: carLogo, path: '/car-insurance' },
+    // { name: 'Car Insurance', logo: carLogo, path: '/car-insurance' },
     { name: 'Life Insurance', logo: lifeLogo, path: '/life-insurance' },
     { name: 'Term Insurance', logo: termLogo, path: '/term-insurance' },
-    { name: 'Bike Insurance', logo: bikeLogo, path: '/bike-insurance' },
+    // { name: 'Bike Insurance', logo: bikeLogo, path: '/bike-insurance' },
     { name: 'Business Insurance', logo: businessLogo, path: '/business-insurance' },
     { name: 'Travel Insurance', logo: travelLogo, path: '/travel-insurance' },
     // Add more insurance types as needed

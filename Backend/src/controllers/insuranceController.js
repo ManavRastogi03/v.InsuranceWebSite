@@ -16,7 +16,7 @@ export const submitForm = async (req, res) => {
     if (!formData.fullName || !formData.mobile || !formData.insuranceType) {
       return res.status(400).json({
         success: false,
-        message: "Missing fullName, mobile, or insuranceType",
+        message: "Please make sure all the required fields (fullName, mobile, insuranceType) are provided.",
       });
     }
 
@@ -24,29 +24,42 @@ export const submitForm = async (req, res) => {
     if (!formData.planId || !mongoose.Types.ObjectId.isValid(formData.planId)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid or missing PlanId!",
+        message: "The PlanId is missing or invalid. Please check and try again.",
       });
     }
+
+    // Attach the userId from the authenticated user (from the middleware)
+    const userId = req.user.id;  // Access the userId from the decoded JWT
+    console.log("Authenticated User ID:", userId);
+    
+    formData.userId = userId;
 
     // ✅ Save the form
     const newForm = new InsuranceForm({
       ...formData,
-      planId: formData.planId, // important! PlanID save hoga
+      planId: formData.planId, // important! PlanID will be saved
     });
 
     const saved = await newForm.save();
 
+    // // ✅ Optionally: Update user profile to link the policy (planId)
+    // await User.findByIdAndUpdate(userId, {
+    //   $push: { policies: formData.planId }, // Add the planId to the user's policies array
+    // });
+
     return res.status(201).json({
       success: true,
-      message: "Form submitted successfully",
+      message: "Form submitted successfully! Your insurance form has been saved.",
       data: saved._id,
     });
   } catch (err) {
     console.log("Received Form Data:", req.body);
     console.error("❌ Error submitting form:", err.message);
+    console.log("Error:", err);
     return res.status(500).json({
+
       success: false,
-      message: "Something went wrong",
+      message: "There was an issue submitting the form. Please try again later.",
     });
   }
 };

@@ -37,6 +37,7 @@ router.post(
     { name: "photo", maxCount: 1 },
     { name: "policyCopy", maxCount: 1 },
   ]),
+  authenticateUser,
   submitForm
 );
 // ✅ Admin-Only API for Creating Insurance Company

@@ -220,16 +220,20 @@ export const submitInsuranceForm = async (formData) => {
   try {
     const payload = new FormData();
 
-    // 🔁 Loop through all fields (including files)
+    // Loop through all fields (including files)
     Object.entries(formData).forEach(([key, value]) => {
       if (value) {
         payload.append(key, value);
       }
     });
 
+    // Get token from localStorage
+    const token = localStorage.getItem("token");
+
     const response = await API.post("/api/insurance/submit", payload, {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: token ? `Bearer ${token}` : "", // Include token in the header
       },
     });
 
@@ -240,11 +244,11 @@ export const submitInsuranceForm = async (formData) => {
     console.error("API Response:", error.response?.data);
     console.error("Error Message:", error.response?.data?.message || error.message);    
     console.error("❌ API Error (submitInsuranceForm):", error.response?.data || error.message );
-    console.log(typeof formData.planId);
     
     throw new Error(error.response?.data?.message || "Failed to submit insurance form");
   }
 };
+
 // ✅ Fetch Insurance Plans by Company ID
 export const fetchPlansByCompanyId = async (companyId) => {
   try {

@@ -48,6 +48,7 @@ import TermStep4 from "../Component/TermInsurance/TermStep4.jsx";
 import TermStep5 from "../Component/TermInsurance/TermStep5.jsx";
 import TermStep6 from "../Component/TermInsurance/TermStep6.jsx";
 import ThankYou from "../Component/Pages/ThankYou.jsx";
+import Healthcalculator from "../Component/TermInsurance/TermInsuranceCalculator.jsx"
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
@@ -92,10 +93,12 @@ const router = createBrowserRouter(
       <Route path="/business-insurance/step6" element={<BusinessStep6/>} />
       <Route path="/thank-you" element={<ThankYou/>}/>
 
+      <Route path="/health-insurance/:type" element={<Healthinsurance />} />
+      {/* <Route path="/health-insurance/step2" element={<></>} */}
 
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/health-insurance/:type" element={<Healthinsurance />} />
+      <Route path="/Premium-calculator" element={<Healthcalculator/>}/>
 
       {/* ✅ User Dashboard */}
       <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />

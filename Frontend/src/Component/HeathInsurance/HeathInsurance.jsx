@@ -1,63 +1,71 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import InsuranceForm from '../InsuranceForm/InsuranceForm.jsx';
-import healthInsuranceImage from "../../assets/Healthinsurance.png";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import FormPageLayout from "../layout/FormPageLayout.jsx";
+import BasicInfoForm from "../InsuranceForm/BasicInfoForm.jsx";
+import FilteredCompanies from "../../User/Component/InsuranceCompanyCard/FilteredCompanies.jsx";
+import children from "../../assets/children.jpg"
+import family from "../../assets/Family.png"
+import Parents from "../../assets/parents.png"
+import seniorcitizen from "../../assets/Seinor.jpg"
+import women from "../../assets/women.png"
+import healthinsurance from "../../assets/Healthinsurance.png"
+
+const healthInsuranceDetails = {
+  family: {
+    title: "Health Insurance for Families",
+    description: "Protect your family with the best coverage plans.",
+    image: family,  // apne assets me rakh lena ya import kar lena
+  },
+  seniorcitizen: {
+    title: "Health Insurance for Senior Citizens",
+    description: "Best plans for senior citizens with lifetime renewability.",
+    image: seniorcitizen,
+  },
+  parents: {
+    title: "Health Insurance for Parents",
+    description: "Affordable health plans specially curated for parents.",
+    image: Parents,
+  },
+  women: {
+    title: "Women Health Insurance",
+    description: "Comprehensive coverage plans designed for women.",
+    image: women,
+  },
+  children: {
+    title: "Health Insurance for Children",
+    description: "Coverage from early years for your kids' health needs.",
+    image: children,
+  }
+};
 
 function HealthInsurance() {
-  const { type } = useParams();
+  const { type } = useParams();  // 🛑 URL se "type" fetch kar rahe hain
+  const [selectedCompany, setSelectedCompany] = useState(null); // 📍 Track karenge company select hui ya nahi
 
-  // Define a mapping of insurance types to their headings
-  const insuranceTitles = {
-    family: "Health Insurance for Families",
-    seniorcitizen: "Health Insurance for Senior Citizens",
-    parents: "Health Insurance for Parents",
-    women: "Women Health Insurance",
-    children: "Health Insurance for Children",
-    calculator: "Health Insurance Premium Calculator",
+  const details = healthInsuranceDetails[type] || {
+    title: "Health Insurance",
+    description: "Get the best health insurance plans customized for you.",
+    image: healthinsurance,
   };
 
-  const heading = insuranceTitles[type] || "Health Insurance";
-
   return (
-    <div className="min-h-screen bg-gray-100 p-4 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-5xl flex flex-col md:flex-row items-center">
-
-        {/* Left Section: Image (hidden on mobile, visible on medium screens and larger) */}
-        <div className="hidden md:block w-full md:w-1/2 p-4 flex justify-center items-center">
-          <img src={healthInsuranceImage} alt="Health Insurance" className="max-h-80 w-full object-cover" />
-        </div>
-
-        {/* Right Section: Insurance Form and Details */}
-        <div className="w-full md:w-1/2 p-4">
-          <h2 className="text-3xl font-semibold mb-4 text-center md:text-left">
-            {heading}
-          </h2>
-          
-          {/* Subtitle/Description */}
-          <p className="text-gray-600 mb-6 text-center md:text-left">
-            Protect your family with comprehensive health insurance plans. Get coverage for medical expenses, hospitalization, and more.
-          </p>
-
-          {/* Benefits List */}
-          <ul className="text-gray-700 mb-6 space-y-2">
-            <li>✅ Coverage up to ₹5 lakhs for all family members</li>
-            <li>✅ Cashless hospitalization at 5000+ hospitals</li>
-            <li>✅ Pre and post-hospitalization coverage</li>
-            <li>✅ Tax benefits under section 80D</li>
-          </ul>
-
-          {/* CTA Button */}
-          <div className="text-center mb-6">
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-all">
-              Get Your Free Quote
-            </button>
-          </div>
-
-          {/* Insurance Form */}
-          <InsuranceForm />
-        </div>
-      </div>
-    </div>
+    <FormPageLayout
+      title={details.title}
+      image={details.image}
+    >
+      {/* 👉 Conditional rendering */}
+      {selectedCompany ? (
+        <BasicInfoForm
+          insuranceType="health-insurance"
+          selectedCompany={selectedCompany}
+        />
+      ) : (
+        <FilteredCompanies
+          selectedType="Health Insurance"
+          onCompanySelect={(company) => setSelectedCompany(company)}
+        />
+      )}
+    </FormPageLayout>
   );
 }
 
