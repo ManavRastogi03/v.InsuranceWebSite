@@ -1,46 +1,66 @@
-import mongoose from "mongoose";
-
-// Define the Policy Schema
-const policySchema = new mongoose.Schema(
-  {
-    policyNumber: {
-      type: String,
-      required: true,  // Policy number is required
-      unique: true,    // Ensures policy number is unique
-    },
-    policyholder: {
-      type: mongoose.Schema.Types.ObjectId,  // Reference to User model
-      ref: "User",                           // Points to the User model
-      required: true,  // Policyholder is required
-    },
-    coverageAmount: {
-      type: Number,
-      required: true, // The coverage amount is required
-    },
-    premium: {
-      type: Number,
-      required: true, // Premium amount is required
-    },
-    startDate: {
-      type: Date,
-      required: true, // Start date is required
-    },
-    endDate: {
-      type: Date,
-      required: true, // End date is required
-    },
-    status: {
-      type: String,
-      enum: ["active", "expired", "suspended"], // Status options
-      default: "active", // Default status is "active"
-    },
+import mongoose from 'mongoose';
+const { Schema, model } = mongoose;  
+const policySchema = new mongoose.Schema({
+  policyId: {
+    type: String,
+    required: true,
+    unique: true,
   },
-  {
-    timestamps: true, // Automatically add createdAt and updatedAt fields
-  }
-);
+  policyholder: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  policyNumber: {
+  type: String,
+  unique: true,
+  sparse: true, // ⚡ important
+},
 
-// Create and export the Policy model
-const Policy = mongoose.model("Policy", policySchema);
+  plan: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "InsurancePlan", // ✅ Link to insurance plan
+    required: true,
+  },
+  insuranceForm: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "InsuranceForm", // ✅ Link to submitted insurance form
+    required: true,
+  },
+  coverageAmount: {
+    type: Number,
+    required: true,
+  },
+  premium: {
+    type: Number,
+    required: true,
+  },
+  startDate: {
+    type: Date,
+    required: true,
+  },
+  endDate: {
+    type: Date,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ["active", "expired", "suspended"],
+    default: "active",
+  },
+  paymentStatus: {
+    type: String,
+    enum: ["paid", "unpaid"],
+    default: "paid",
+  },
+  documentUrl: {
+    type: String,
+  }
+}, {
+  timestamps: true,
+});
+
+// Create the model
+const Policy = mongoose.model('Policy', policySchema);
 
 export default Policy;

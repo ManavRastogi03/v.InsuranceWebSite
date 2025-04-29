@@ -79,7 +79,6 @@ const Companies = () => {
       {/* Company Table */}
       <CompanyTable
         companies={filteredCompanies}
-        onEdit={(company) => navigate(`/admin/companies/edit/${company._id}`)}
         onDelete={handleDeleteCompany}
       />
     </div>

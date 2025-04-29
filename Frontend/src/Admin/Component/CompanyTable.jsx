@@ -13,7 +13,6 @@ const CompanyTable = ({ companies, onEdit, onDelete }) => {
             <th className="p-3">Name</th>
             <th className="p-3">Logo</th>
             <th className="p-3">Contact</th>
-            <th className="p-3">Plans</th>
             <th className="p-3">Actions</th>
           </tr>
         </thead>
@@ -25,19 +24,8 @@ const CompanyTable = ({ companies, onEdit, onDelete }) => {
                 <img src={company.companyLogo} alt="Logo" className="w-10 h-10 rounded-md" />
               </td>
               <td className="p-3">{company.contactNumber}</td>
-              <td className="p-3">
-                {Array.isArray(company.insurancePlans)
-                  ? company.insurancePlans.join(", ")
-                  : "No Plans"}
-              </td>
+
               <td className="p-3 flex flex-wrap gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => onEdit(company)}
-                  className="px-3 py-1 text-sm"
-                >
-                  Edit
-                </Button>
                 <Button
                   variant="destructive"
                   onClick={() => onDelete(company._id)}

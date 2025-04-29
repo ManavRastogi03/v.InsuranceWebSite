@@ -15,6 +15,7 @@ import insuranceRoutes from "./routes/insuranceRoutes.js";
 import PlanRoutes from "./routes/insurancePlanRoutes.js"
 import adminRoutes from "./routes/adminRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js"
+import policyRoutes from "./routes/policyRoutes.js"
 // Initialize Express app
 const app = express();
 
@@ -39,6 +40,10 @@ app.use("/api/plan",PlanRoutes);
 app.use("/api/admin",adminRoutes);
 app.use("/api/notifications", notificationRoutes);
 // app.use("/api/insurance", insuranceRouter)
+
+
+//  policy routes
+app.use('/api/policies', policyRoutes); 
 // Default Route
 app.get("/", (req, res) => {
   res.send("Insurance Wala API is Running...");

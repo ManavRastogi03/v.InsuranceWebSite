@@ -34,6 +34,7 @@ export const getUserProfile = async () => {
         });
         return response.data; // ✅ Return User Data
     } catch (error) {
+      
         console.error("❌ Error Fetching Profile:", error.response?.data?.message || error.message);
         throw new Error(error.response?.data?.message || "Failed to fetch profile");
     }
@@ -66,6 +67,8 @@ export const updatePassword = async (passwordData) => {
       console.log("API Response:", response.data); 
       return response.data; // ✅ API ka response return karo
     } catch (error) {
+      console.log(passwordData);
+      
       console.error("API Error (updatePassword):", error.response?.data || error.message);
 
       // ❌ Agar backend error response nahi de raha to default error message return karo
@@ -227,25 +230,78 @@ export const submitInsuranceForm = async (formData) => {
       }
     });
 
-    // Get token from localStorage
     const token = localStorage.getItem("token");
 
-    const response = await API.post("/api/insurance/submit", payload, {
+    // Step 1: Submit the insurance form
+    const formResponse = await API.post("/api/insurance/submit", payload, {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: token ? `Bearer ${token}` : "", // Include token in the header
+        Authorization: token ? `Bearer ${token}` : "",
       },
     });
 
-    console.log("✅ Insurance Form Submitted:", response.data);
-    return response.data;
-  } catch (error) {
-    console.log("📦 formData before submission:", formData);
-    console.error("API Response:", error.response?.data);
-    console.error("Error Message:", error.response?.data?.message || error.message);    
-    console.error("❌ API Error (submitInsuranceForm):", error.response?.data || error.message );
+    console.log("✅ Insurance Form Submitted:", formResponse.data);
+
+    // Step 2: Extract values from response
+    const formDataResponse = formResponse.data.data;
+    const {
+      planId,
+      userId,
+      _id: formId,
+      policyCopy: documentUrl
+    } = formDataResponse;
     
-    throw new Error(error.response?.data?.message || "Failed to submit insurance form");
+    const planIdValue = typeof planId === "object" ? planId._id : planId;
+    const userIdValue = typeof userId === "object" ? userId._id : userId;
+    // Step 3: Fetch plan details
+    const planResponse = await API.get(`/api/plan/${planId}`);
+    const planData = planResponse.data?.plan || {};
+
+    console.log("Plan Data:", planData);
+
+    const { coverageAmount, premiumPrice, duration, name, type } = planData;
+
+    // Step 4: Basic validation
+    if (!coverageAmount || !premiumPrice || !duration || !name || !type) {
+      console.error("❌ Missing necessary fields in plan data");
+      return;
+    }
+
+    if (!formData.startDate || !formData.endDate) {
+      console.error("❌ startDate or endDate missing in formData");
+      return;
+    }
+    
+
+    // Step 5: Generate random policy ID
+// Step 5: Generate random policy ID (only ONCE)
+// const generatedPolicyId = `POLICY-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+// Debug log BEFORE the request
+const policyResponse = await API.post("/api/policies/create", {
+  userId: userIdValue,
+  planId: planIdValue,
+  insuranceFormId: formId,
+  coverageAmount: planData.coverageAmount,
+  premium: planData.premiumPrice,
+  startDate: formData.startDate,
+  endDate: formData.endDate,
+  documentUrl: documentUrl || null,
+}, {
+  headers: {
+    Authorization: token ? `Bearer ${token}` : "",
+  },
+});
+
+
+    
+
+    console.log("✅ Policy Created:", policyResponse.data);
+    return policyResponse.data;
+
+  } catch (error) {
+    console.error("📦 Error during form submission:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Failed to submit insurance form and create policy");
   }
 };
 
@@ -281,6 +337,25 @@ export const getCompaniesByType = async (type) => {
     console.error("❌ API Error (getCompaniesByType):", error.response?.data || error.message);
     throw new Error(error.response?.data?.message || "Failed to fetch filtered companies");
   }
+};
+export const getUnassignedInsurancePlans = async () => {
+  try {
+    const response = await API.get("/api/insurance/unassigned-plans");
+    return response.data.data;
+  } catch (error) {
+    console.error("❌ Error fetching unassigned insurance plans:", error);
+    throw error;
+  }
+};
+
+export const fetchUserPolicies = async () => {
+  const token = localStorage.getItem("token");
+  const response = await API.get("/api/policies/user", {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+  return response.data.policies; // adjust key if response format is different
 };
 
 // ✅ Fetch All Insurance Companies

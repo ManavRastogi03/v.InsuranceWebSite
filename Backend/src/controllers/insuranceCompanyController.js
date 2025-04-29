@@ -1,7 +1,7 @@
 import InsuranceCompany from "../models/InsuranceCompany.js";
 import cloudinary from "../config/cloudinaryConfig.js";
 import mongoose from "mongoose";
-
+import InsurancePlan from "../models/InsurancePlan.js";
 
 export const createInsuranceCompany = async (req, res) => {
   try {
@@ -30,7 +30,7 @@ export const createInsuranceCompany = async (req, res) => {
         return res.status(400).json({ message: "Invalid Plan IDs provided!", invalidIds });
       }
 
-    let companyLogo = "https://asset.cloudinary.com/duj6tm4qi/c4692e8823e8343c9e21d8f0d00652b7"; // ✅ Default logo if no file is uploaded
+    let companyLogo = "https://res.cloudinary.com/duj6tm4qi/image/upload/v1743759676/insurance_companies/file.png"; // ✅ Default logo if no file is uploaded
 
     // ✅ Upload image only if file is provided
     if (file) {
@@ -173,4 +173,39 @@ export const getCompaniesByInsuranceType = async (req, res) => {
 };
 
 
+export const getUnassignedInsurancePlans = async (req, res) => {
+  try {
+    // 1. Sare companies ke insurancePlans uthao
+    const companies = await InsuranceCompany.find({}, 'insurancePlans');
+    
+    // 2. Sare insurancePlans ka ek list banao
+    let assignedPlanIds = [];
+    companies.forEach(company => {
+      if (company.insurancePlans && company.insurancePlans.length > 0) {
+        assignedPlanIds = assignedPlanIds.concat(company.insurancePlans);
+      }
+    });
+    
 
+    // 3. Unique ids (agar repeat hue ho toh hata do)
+    assignedPlanIds = [...new Set(assignedPlanIds.map(id => id.toString()))];
+
+    // 4. Jo assigned nahi hai woh plans find karo
+    const unassignedPlans = await InsurancePlan.find({
+      _id: { $nin: assignedPlanIds }
+    });
+
+    // 5. Response bhejo
+    res.status(200).json({
+      message: "Unassigned insurance plans fetched successfully",
+      data: unassignedPlans
+    });
+
+  } catch (error) {
+    console.error("❌ Error fetching unassigned insurance plans:", error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message
+    });
+  }
+};

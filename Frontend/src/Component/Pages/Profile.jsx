@@ -1,8 +1,8 @@
 import React, { useState,useEffect } from "react";
 import { Edit, Eye, EyeOff } from "lucide-react";
-import { getUserProfile } from "../../api/api";
-import { uploadProfilePic } from "../../api/api";
-import { updatePassword } from "../../api/api";
+import { getUserProfile } from "../../api/api.js";
+import { uploadProfilePic } from "../../api/api.js";
+import { updatePassword } from "../../api/api.js";
 
 
 const Profile = () => {
@@ -79,16 +79,15 @@ const Profile = () => {
         oldPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword,
       };
-  
+    
       const response = await updatePassword(payload); // 🔄 API call
       alert("Password updated successfully!");
     } catch (error) {
-      console.log(response);
-      
+      console.error(error);
       alert("Failed to update password: " + error.message);
     }
-  };
-  
+  }
+    
   
 
 

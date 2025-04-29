@@ -33,6 +33,9 @@ export const getUserProfile = async (req, res) => {
 
 
 // ✅ Update Password
+
+const saltRounds = 10;
+
 export const updatePassword = async (req, res) => {
   try {
     const userId = req.user.id; // Token se user ka ID mila
@@ -42,12 +45,18 @@ export const updatePassword = async (req, res) => {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // 🔑 Old password verify karein
-    const isMatch = await user.comparePassword(oldPassword);
+    // 🔑 Old password ko hashed password ke saath compare karo
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
     if (!isMatch) return res.status(400).json({ message: "Old password is incorrect" });
+    console.log('Entered Old Password:', oldPassword);
+    console.log('Stored Hashed Password:', user.  password);
 
-    // 🔐 Naya password set karein (hashing pre-save middleware karega)
-    user.password = newPassword;
+    
+    // 🔐 Naya password ko hash karo
+    const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
+
+    // 🔐 Naya password set karo (hashed version)
+    user.password = hashedNewPassword;
     await user.save();
 
     res.json({ message: "Password updated successfully" });

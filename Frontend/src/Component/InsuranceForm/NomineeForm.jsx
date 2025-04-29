@@ -48,6 +48,30 @@ const NomineeForm = ({ insuranceType }) => {
           onChange={(e) => updateFormData("nomineeDob", e.target.value)}
         />
       </div>
+      <div style={{ marginBottom: "1rem" }}>
+              <label style={{ display: "block", fontWeight: "bold", marginBottom: "0.5rem" }}>
+                Policy Start Date:
+              </label>
+              <input
+                type="date"
+                value={formData.startDate}
+                onChange={(e) => updateFormData("startDate", e.target.value)}
+                style={{ padding: "0.5rem", borderRadius: "5px", border: "1px solid #ccc", width: "100%" }}
+              />
+            </div>
+
+            <div style={{ marginBottom: "1rem" }}>
+              <label style={{ display: "block", fontWeight: "bold", marginBottom: "0.5rem" }}>
+                Policy End Date:
+              </label>
+              <input
+                type="date"
+                value={formData.endDate}
+                onChange={(e) => updateFormData("endDate", e.target.value)}
+                style={{ padding: "0.5rem", borderRadius: "5px", border: "1px solid #ccc", width: "100%" }}
+              />
+            </div>
+
 
       <div className="flex justify-end pt-4">
         <Button onClick={handleNext}>Next</Button>

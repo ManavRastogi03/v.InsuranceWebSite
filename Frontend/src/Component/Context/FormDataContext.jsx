@@ -38,6 +38,8 @@ export const FormDataProvider = ({ children }) => {
     photo: null,
 
     // Step 6: Confirmation
+    startDate: "",
+    endDate: "",
     confirmed: false,
   });
 
@@ -69,6 +71,8 @@ export const FormDataProvider = ({ children }) => {
       pan: null,
       policyCopy: null,
       photo: null,
+      startDate: "",
+      endDate: "",
       confirmed: false,
     });
   };

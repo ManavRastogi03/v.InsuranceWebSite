@@ -11,7 +11,8 @@ import { getCompanies } from "../controllers/insuranceCompanyController.js";
 import {deleteInsuranceCompany} from "../controllers/insuranceCompanyController.js";
 import upload from "../middlewares/multer.js"; // ✅ Correct (Default Import)
 import uploadfile from "../middlewares/uplaodfile.js";
-import { submitForm } from "../controllers/insuranceController.js";
+import { submitForm ,getAllInsuranceForms} from "../controllers/insuranceController.js";
+import  {getUnassignedInsurancePlans} from "../controllers/insuranceCompanyController.js"
 
 const router = express.Router();
 // ✅ Public API (No auth needed)
@@ -48,9 +49,13 @@ router.post(
   authorizeAdmin, 
   createInsuranceCompany
 );
+router.get("/all", getAllInsuranceForms);
+
+
 router.get("/companies", getCompanies);
 router.get("/companies-with-plans", getCompaniesWithPlans);
 router.get("/companies/by-type", getCompaniesByInsuranceType);
 
 router.delete("/admin/deletecompany/:companyId", authenticateUser, authorizeAdmin, deleteInsuranceCompany);
+router.get('/unassigned-plans', getUnassignedInsurancePlans);
 export default router;

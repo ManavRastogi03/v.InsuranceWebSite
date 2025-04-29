@@ -48,6 +48,11 @@ import TermStep4 from "../Component/TermInsurance/TermStep4.jsx";
 import TermStep5 from "../Component/TermInsurance/TermStep5.jsx";
 import TermStep6 from "../Component/TermInsurance/TermStep6.jsx";
 import ThankYou from "../Component/Pages/ThankYou.jsx";
+import HealthStep2 from "../Component/HeathInsurance/HealthStep2.jsx";
+import HealthStep3 from "../Component/HeathInsurance/HealthStep3.jsx";
+import HealthStep4 from "../Component/HeathInsurance/HealthStep4.jsx";
+import HealthStep5 from "../Component/HeathInsurance/HealthStep5.jsx";
+import HealthStep6 from "../Component/HeathInsurance/HealthStep6.jsx"
 import Healthcalculator from "../Component/TermInsurance/TermInsuranceCalculator.jsx"
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -94,8 +99,15 @@ const router = createBrowserRouter(
       <Route path="/thank-you" element={<ThankYou/>}/>
 
       <Route path="/health-insurance/:type" element={<Healthinsurance />} />
-      {/* <Route path="/health-insurance/step2" element={<></>} */}
+      <Route path="/health-insurance/step2" element={<HealthStep2/>}/>
+      <Route path="/health-insurance/step3" element={<HealthStep3/>}/>
+      <Route path="/health-insurance/step4" element={<HealthStep4/>}/>
+      <Route path="/health-insurance/step5" element={<HealthStep5/>}/>
+      <Route path="/health-insurance/step6" element={<HealthStep6/>}/>
+      <Route path="/thank-you" element={<ThankYou/>}/>
 
+
+      
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/Premium-calculator" element={<Healthcalculator/>}/>
