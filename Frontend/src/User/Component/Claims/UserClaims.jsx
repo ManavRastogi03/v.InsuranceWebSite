@@ -1,32 +1,24 @@
+import { useEffect, useState } from "react";
 import { FaFileUpload, FaEye, FaPlusCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { fetchUserClaims } from "../../../api/api.js"; // Make sure the path is correct
 
 const UserClaims = () => {
-  const claims = [
-    {
-      id: "CLM001",
-      type: "Medical",
-      amount: "$2,500",
-      date: "2024-03-01",
-      status: "Submitted",
-      documentLink: "/docs/claim-medical.pdf",
-    },
-    {
-      id: "CLM002",
-      type: "Car Accident",
-      amount: "$5,000",
-      date: "2024-01-15",
-      status: "Approved",
-      documentLink: "/docs/claim-car.pdf",
-    },
-    {
-      id: "CLM003",
-      type: "Travel",
-      amount: "$1,200",
-      date: "2023-12-10",
-      status: "Rejected",
-      documentLink: "/docs/claim-travel.pdf",
-    },
-  ];
+  const [claims, setClaims] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadClaims = async () => {
+      try {
+        const data = await fetchUserClaims();
+        setClaims(data);
+      } catch (err) {
+        console.error("Failed to load claims:", err);
+      }
+    };
+
+    loadClaims();
+  }, []);
 
   const getStatusStyle = (status) => {
     switch (status) {
@@ -43,11 +35,18 @@ const UserClaims = () => {
     }
   };
 
+  const handleNewClaimClick = () => {
+    navigate("/user/claims/new");
+  };
+
   return (
     <div className="p-4 md:p-8">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
         <h1 className="text-2xl md:text-3xl font-bold">Your Claims</h1>
-        <button className="mt-4 sm:mt-0 inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl shadow">
+        <button
+          onClick={handleNewClaimClick}
+          className="mt-4 sm:mt-0 inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl shadow"
+        >
           <FaPlusCircle /> File New Claim
         </button>
       </div>
@@ -55,11 +54,11 @@ const UserClaims = () => {
       <div className="grid gap-6">
         {claims.map((claim) => (
           <div
-            key={claim.id}
+            key={claim._id}
             className="bg-white rounded-2xl shadow-sm p-5 border-l-4 border-blue-500"
           >
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
-              <h2 className="text-lg font-semibold">{claim.type}</h2>
+              <h2 className="text-lg font-semibold">{claim.claimType}</h2>
               <span
                 className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusStyle(
                   claim.status
@@ -71,28 +70,26 @@ const UserClaims = () => {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 text-sm text-gray-700 mb-3">
               <p>
-                <strong>Claim ID:</strong> {claim.id}
+                <strong>Claim ID:</strong> {claim.claimId}
               </p>
               <p>
-                <strong>Date:</strong> {claim.date}
+                <strong>Date:</strong> {new Date(claim.createdAt).toLocaleDateString()}
               </p>
               <p>
-                <strong>Amount:</strong> {claim.amount}
+                <strong>Amount:</strong> ${claim.claimAmount}
               </p>
             </div>
 
             <div className="flex gap-3">
               <a
-                href={claim.documentLink}
+                href={claim.documentUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-xl shadow"
               >
                 <FaEye /> View Document
               </a>
-              <button className="inline-flex items-center gap-2 border border-blue-500 text-blue-500 hover:bg-blue-100 text-sm font-medium px-4 py-2 rounded-xl shadow">
-                <FaFileUpload /> Upload Docs
-              </button>
+
             </div>
           </div>
         ))}

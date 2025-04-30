@@ -16,6 +16,7 @@ import PlanRoutes from "./routes/insurancePlanRoutes.js"
 import adminRoutes from "./routes/adminRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js"
 import policyRoutes from "./routes/policyRoutes.js"
+import claimRoutes from "./routes/claimRoutes.js"
 // Initialize Express app
 const app = express();
 
@@ -39,6 +40,7 @@ app.use("/api/insurance", insuranceRoutes);
 app.use("/api/plan",PlanRoutes);
 app.use("/api/admin",adminRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/claims",claimRoutes);
 // app.use("/api/insurance", insuranceRouter)
 
 

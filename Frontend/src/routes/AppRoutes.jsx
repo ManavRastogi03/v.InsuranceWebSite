@@ -54,6 +54,7 @@ import HealthStep4 from "../Component/HeathInsurance/HealthStep4.jsx";
 import HealthStep5 from "../Component/HeathInsurance/HealthStep5.jsx";
 import HealthStep6 from "../Component/HeathInsurance/HealthStep6.jsx"
 import Healthcalculator from "../Component/TermInsurance/TermInsuranceCalculator.jsx"
+import NewClaimForm from "../User/Component/Claims/NewClaimForm.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
@@ -132,6 +133,8 @@ const router = createBrowserRouter(
         <Route path="help" element={<Help/>}/>
         <Route path="policies" element={<UserPolicies/>}/>
         <Route path="claims" element={<UserClaims/>}/>
+        <Route path="claims/new" element={<NewClaimForm />} />
+
         <Route path="payments" element={<UserPayments/>}/>
       </Route>
     </Route>

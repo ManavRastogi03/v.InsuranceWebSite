@@ -357,6 +357,53 @@ export const fetchUserPolicies = async () => {
   });
   return response.data.policies; // adjust key if response format is different
 };
+export const fileNewClaim = async (data) => {
+  try {
+    const token = localStorage.getItem("token"); // Or wherever you're storing the token
+
+    const formData = new FormData();
+    formData.append("document", data.documentFile);
+    formData.append("policyId", data.policyId);
+    formData.append("claimType", data.claimType);
+    formData.append("claimAmount", data.claimAmount);
+    formData.append("description", data.description);
+    console.log("frontend",data.policyId);
+    
+
+    // Sending the request to the backend
+    const res = await API.post('/api/claims', formData, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    return res.data; // Return response data if the claim was successfully created
+  } catch (error) {
+    console.error("Error submitting claim:", error.message);
+
+    // Optionally, you can return an error object or throw it again to propagate the error
+    return {
+      success: false,
+      message: error.response ? error.response.data.message : error.message
+    };
+  }
+};
+
+
+export const fetchUserClaims = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    
+    const response = await API.get("/api/claims/user", {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    });
+
+    return response.data.claims;
+  } catch (error) {
+    console.error("Error fetching user claims:", error);
+    throw error;
+  }
+};
 
 // ✅ Fetch All Insurance Companies
 // export const fetchCompanies = async () => {
