@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormData } from "../Context/FormDataContext.jsx";
 import Button from "../ui/Button.jsx";
-import { submitInsuranceForm } from "../../api/api.js"; // ✅ import your API function
+import { submitInsuranceForm } from "../../api/api.js";
+import Loader from "../Loader/Loader.jsx"; // 👈 Import the Loader
 
 const ReviewPayment = () => {
   const navigate = useNavigate();
-  const { formData, resetFormData } = useFormData(); // ✅ use reset
+  const { formData, resetFormData } = useFormData();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
@@ -15,14 +16,22 @@ const ReviewPayment = () => {
       const response = await submitInsuranceForm(formData);
       console.log("✅ Submitted:", response);
 
-      resetFormData(); // Clear context after submission
+      resetFormData();
       navigate("/thank-you");
-    } catch (error) { 
+    } catch (error) {
       alert("❌ Submission failed: " + error.message);
     } finally {
       setLoading(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-80">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -53,7 +62,7 @@ const ReviewPayment = () => {
 
       <div className="flex justify-end">
         <Button onClick={handleSubmit} disabled={loading} className="mt-4">
-          {loading ? "Submitting..." : "Confirm & Proceed to Pay"}
+          Confirm & Proceed to Pay
         </Button>
       </div>
     </div>
@@ -61,4 +70,3 @@ const ReviewPayment = () => {
 };
 
 export default ReviewPayment;
-// #❌ Submission failed: Missing fullName, mobile, or insuranceType

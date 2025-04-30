@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-const { Schema, model } = mongoose;  
 const policySchema = new mongoose.Schema({
   policyId: {
     type: String,

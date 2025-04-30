@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaFileDownload, FaSyncAlt } from "react-icons/fa";
 import { fetchUserPolicies } from "../../../api/api.js";
+import Loader from "../../../Component/Loader/Loader.jsx";
 
 const UserPolicies = () => {
   const [policies, setPolicies] = useState([]);
@@ -21,7 +22,13 @@ const UserPolicies = () => {
     loadPolicies();
   }, []);
 
-  if (loading) return <p className="text-center">Loading policies...</p>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 md:p-8">

@@ -7,8 +7,8 @@ import {
   FaCreditCard,
   FaQuestionCircle,
   FaUserCircle,
-  FaBars,
-  FaTimes,
+  FaChevronRight,
+  FaChevronLeft,
 } from "react-icons/fa";
 
 const UserSidebar = () => {
@@ -24,24 +24,26 @@ const UserSidebar = () => {
     { name: "Dashboard", icon: <FaTachometerAlt />, link: "/user/dashboard" },
     { name: "Your Policies", icon: <FaFileAlt />, link: "/user/policies" },
     { name: "Claims", icon: <FaClipboardList />, link: "/user/claims" },
-    { name: "Payments", icon: <FaCreditCard />, link: "/user/payments" }, // optional
+    { name: "Payments", icon: <FaCreditCard />, link: "/user/payments" },
     { name: "Help", icon: <FaQuestionCircle />, link: "/user/help" },
     { name: "Profile", icon: <FaUserCircle />, link: "/profile" },
   ];
 
   return (
     <>
-      {/* Mobile Toggle Button */}
+      {/* Mobile Toggle Arrow */}
       <button
-        className="lg:hidden fixed top-5 left-5 text-2xl z-50 bg-white p-2 rounded shadow-md"
+        className={`fixed top-5 z-50 text-white bg-green-600 rounded-r-full p-2 shadow-md transition-transform duration-300 lg:hidden ${
+          isOpen ? "left-64" : "left-0"
+        }`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? <FaTimes /> : <FaBars />}
+        {isOpen ? <FaChevronLeft /> : <FaChevronRight />}
       </button>
 
       {/* Sidebar */}
       <div
-        className={`fixed lg:relative top-0 left-0 w-64 h-screen bg-white shadow-lg p-5 transition-transform duration-300 
+        className={`fixed lg:sticky top-0 left-0 w-64 h-screen bg-white shadow-lg p-5 transition-transform duration-300 z-40
         ${isOpen ? "translate-x-0" : "-translate-x-64"} lg:translate-x-0`}
       >
         <h2 className="text-xl font-bold mb-6 text-center">User Dashboard</h2>
@@ -58,7 +60,8 @@ const UserSidebar = () => {
                   }`
                 }
               >
-                {item.icon} <span className="text-sm font-medium">{item.name}</span>
+                {item.icon}
+                <span className="text-sm font-medium">{item.name}</span>
               </NavLink>
             </li>
           ))}
@@ -68,7 +71,7 @@ const UserSidebar = () => {
       {/* Overlay for Mobile */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black opacity-50 lg:hidden"
+          className="fixed inset-0 bg-black opacity-50 lg:hidden z-30"
           onClick={() => setIsOpen(false)}
         ></div>
       )}

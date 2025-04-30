@@ -3,9 +3,12 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../Component/ui/Input";
 import { addInsuranceCompany, getUnassignedInsurancePlans } from "../../../api/api";
 import Button from "../../Component/ui/Button";
+import Loader from "../../../Component/Loader/Loader.jsx"; // adjust path if needed
+
 
 const AddCompany = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [companyData, setCompanyData] = useState({
     name: "",
     logo: "",
@@ -52,16 +55,26 @@ const AddCompany = () => {
     };
 
     try {
+      setLoading(true); 
       await addInsuranceCompany(companyDataForSubmit);
       console.log("✅ Company Added Successfully!");
       navigate("/admin/companies");
     } catch (error) {
       console.error("❌ Error Adding Company:", error);
+    } finally {
+      setLoading(false); // hide loader
     }
+  
   };
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
+      {loading ? (
+    <div className="flex justify-center items-center h-40">
+      <Loader />
+    </div>
+  ) : (
+    <>
       {/* ✨ Title */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-black">Add New Insurance Company</h2>
@@ -161,8 +174,11 @@ const AddCompany = () => {
           </Button>
         </div>
       </form>
+      </>
+    )}
       {/* 📋 Form End */}
     </div>
+
   );
 };
 

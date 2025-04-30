@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { getCompaniesByType } from "../../../api/api.js";
 import InsuranceCompanyCard from "../../Component/InsuranceCompanyCard/InsuranceCompanyCard.jsx";
-import { useFormData } from "../../../Component/Context/FormDataContext.jsx"; // 👈✨ Add this
-
+import { useFormData } from "../../../Component/Context/FormDataContext.jsx"; 
+import Loader from "../../../Component/Loader/Loader.jsx"; 
 const FilteredCompanies = ({ selectedType, onCompanySelect }) => {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { updateFormData } = useFormData(); // 👈✨ Add this
+  const { updateFormData } = useFormData(); 
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -35,7 +35,9 @@ const FilteredCompanies = ({ selectedType, onCompanySelect }) => {
     <div className="p-6">
       <h2 className="text-xl font-semibold mb-4">Choose an Insurance Company</h2>
       {loading ? (
-        <p>Loading companies...</p>
+        <div className="flex justify-center items-center h-40">
+          <Loader />
+        </div>
       ) : companies.length === 0 ? (
         <p>No companies found for this type.</p>
       ) : (

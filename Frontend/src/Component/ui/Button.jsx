@@ -13,13 +13,13 @@ const Button = ({
 
   const variants = {
     primary:
-      "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-400",
+      "bg-green-600 text-white hover:bg-green-400 focus:ring-green-400",
     outline:
-      "border border-gray-400 text-gray-700 hover:bg-gray-100 focus:ring-gray-300",
+      "border border-green-400 text-green-700 hover:bg-gray-100 focus:ring-green-300",
     destructive:
-      "bg-red-500 text-white hover:bg-red-600 focus:ring-red-300",
+      "bg-red-500 text-white hover:bg-red-600 focus:ring-geen-300",
     ghost:
-      "bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-300",
+      "bg-transparent text-green-700 hover:bg-green-100 focus:ring-green-300",
   };
 
   return (

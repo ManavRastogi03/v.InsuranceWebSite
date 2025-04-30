@@ -1,12 +1,20 @@
 import { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { FaTachometerAlt, FaBuilding, FaFileAlt, FaUser, FaBell, FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
+import {
+  FaTachometerAlt,
+  FaBuilding,
+  FaFileAlt,
+  FaUser,
+  FaBell,
+  FaUserCircle,
+  FaAngleLeft,
+  FaAngleRight,
+} from "react-icons/fa";
 
 const AdminSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation(); // Detect route changes
+  const location = useLocation();
 
-  // Auto-close sidebar on mobile when route changes
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
@@ -22,39 +30,48 @@ const AdminSidebar = () => {
 
   return (
     <>
-      {/* Mobile Toggle Button */}
+      {/* Sticky Right Toggle Button */}
       <button
-        className="lg:hidden fixed top-5 left-5 text-2xl z-50 bg-white p-2 rounded shadow-md"
+        className="fixed top-1/2 right-2 transform -translate-y-1/2 z-50 bg-green-600 text-white p-2 rounded-full shadow-lg lg:hidden"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? <FaTimes /> : <FaBars />}
+        {isOpen ? <FaAngleRight /> : <FaAngleLeft />}
       </button>
 
       {/* Sidebar */}
-      <div className={`fixed lg:relative top-0 left-0 w-64 h-screen bg-white shadow-lg p-5 transition-transform duration-300 
-        ${isOpen ? "translate-x-0" : "-translate-x-64"} lg:translate-x-0`}
+      <aside
+        className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-40 transform transition-transform duration-300
+        ${isOpen ? "translate-x-0" : "translate-x-full"} lg:translate-x-0 lg:left-0 lg:right-auto lg:relative`}
       >
-        <h2 className="text-xl font-bold mb-6 text-center">Admin Panel</h2>
-        <ul>
+        <h2 className="text-xl font-bold mb-6 p-4 text-center border-b">Admin Panel</h2>
+        <ul className="px-2 space-y-1">
           {menuItems.map((item) => (
             <li key={item.name}>
               <NavLink
                 to={item.link}
                 className={({ isActive }) =>
                   `flex items-center gap-3 p-3 rounded-lg transition-all ${
-                    isActive ? "bg-green-300 hover:bg-green-400 text-white" : "hover:bg-gray-200"
+                    isActive
+                      ? "bg-green-300 hover:bg-green-400 text-white"
+                      : "hover:bg-gray-100 text-gray-800"
                   }`
                 }
               >
-                {item.icon} <span className="text-sm font-medium">{item.name}</span>
+                {item.icon}
+                <span className="text-sm font-medium">{item.name}</span>
               </NavLink>
             </li>
           ))}
         </ul>
-      </div>
+      </aside>
 
-      {/* Overlay for Mobile */}
-      {isOpen && <div className="fixed inset-0 bg-black opacity-50 lg:hidden" onClick={() => setIsOpen(false)}></div>}
+      {/* Background Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black opacity-40 lg:hidden z-30"
+          onClick={() => setIsOpen(false)}
+        ></div>
+      )}
     </>
   );
 };

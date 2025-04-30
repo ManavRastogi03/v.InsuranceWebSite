@@ -66,7 +66,7 @@ const InsuranceCompanyCard = ({ company, onApply }) => {
           {/* Button */}
           <button
             onClick={() => onApply(company, plan)}
-            className="bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 transition w-full text-sm md:text-base"
+            className="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-400 transition w-full text-sm md:text-base"
           >
             Proceed to Apply
           </button>
