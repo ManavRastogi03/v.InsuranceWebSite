@@ -22,11 +22,22 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors({ 
-  origin: process.env.CLIENT_URL,
-   credentials: true }));
-app.use(helmet());
-app.use(cookieParser());
+const allowedOrigins = [
+  "https://v-insurance-web-site.vercel.app", // production
+  "http://localhost:5173",                    // development
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
+
 
 // Connect Database
 connectDB();
