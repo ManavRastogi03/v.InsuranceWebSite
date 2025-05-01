@@ -1,79 +1,72 @@
-# Insurance Wala
+# 🛡️ Insurance Wala
 
-Insurance Wala is a full-stack web application designed to help users select and manage insurance plans for themselves and their family members. It includes authentication, insurance options, city selection, and medical history storage.
+**Insurance Wala** is a full-stack insurance management platform that simplifies the process of handling insurance policies, managing users, and submitting claims. Built with modern web technologies, it supports both user and admin roles with a seamless, responsive experience.
 
-## Features
+---
 
-- **User Authentication:** Email/Password & Google Sign-In
-- **Insurance Options:** Coverage for self, wife, son, daughter, and mother
-- **Age-based Insurance Storage**
-- **City Selection Storage**
-- **Medical History Management**
+## 🎥 Demo Video
 
-## Tech Stack
+Check out the project in action:  
+👉 [Watch on YouTube](https://youtu.be/v-QKy1pbNvU?si=6-qJiRUqedozGkxF)
 
-### Frontend
-- React.js
-- Tailwind CSS
+---
 
-### Backend
-- Node.js
-- Express.js
-- MongoDB
+## 🚀 Features
 
-## Getting Started
+### 👤 User Features
+- Signup/Login with secure authentication
+- Browse and purchase insurance plans
+- Submit insurance claim forms
+- View policy details and track claim status
+
+### 🛠️ Admin Features
+- Manage users and insurance companies
+- Create, update, and delete policies
+- View all claims and user submissions
+- Role-based access control
+
+---
+
+## 💡 Tech Stack
+
+| Layer       | Technology                   |
+|-------------|-------------------------------|
+| Frontend    | React, Tailwind CSS, Axios    |
+| Backend     | Node.js, Express.js           |
+| Database    | MongoDB + Mongoose            |
+| Auth        | JWT (JSON Web Tokens)         |
+| State Mgmt  | React Context API             |
+| Routing     | React Router DOM              |
+| API Calls   | Axios with centralized config |
+
+---
+
+## 📁 Folder Structure
+
+insurance-wala/ │ ├── client/ # React frontend │ ├── components/ │ ├── pages/ │ ├── routes/ │ └── ... │ ├── server/ # Node.js backend │ ├── controllers/ │ ├── middleware/ │ ├── models/ │ ├── routes/ │ └── ... │ └── README.md
+
+---
+
+## 🧪 Getting Started
 
 ### Prerequisites
-- Node.js installed
-- MongoDB instance running
+- Node.js and npm installed
+- MongoDB (local or cloud instance)
 
-### Installation
-#### Clone the Repository
-```sh
-git clone https://github.com/ManavRastogi03/v.InsuranceWebSite.git
-```
+### Setup
 
-#### Backend Setup
-```sh
-cd backend
-npm install
-```
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/ManavRastogi03/v.InsuranceWebSite.git
+   cd v.InsuranceWebSite
 
-Create a `.env` file in the `backend` directory and add the required environment variables:
-```env
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-```
 
-Start the backend server:
-```sh
-npm run dev
-```
+📫 Contact
+If you're building something exciting or have a startup idea that needs tech talent — let's connect!
 
-#### Frontend Setup
-```sh
-cd ../frontend
-npm install
-npm run dev
-```
+LinkedIn: https://www.linkedin.com/in/manavrastogi03/
 
-## Usage
-- Register/Login with Email or Google
-- Select an insurance plan
-- Store age, city, and medical history
-- Manage and update your details
-![Image 1](image_path)
+Email: manavrastogi501@gmail.com
 
-## Roadmap
-- 🚀 Deploy the application
-- 📈 Add payment gateway integration
-- 🔒 Implement more security features
-
-## Contributing
-Contributions are welcome! Fork the repo and submit a pull request.
-
-## License
-MIT License
+"Insurance Wala" is built with passion and curiosity to solve real-world problems. Built with ❤️ by Manav.
 
