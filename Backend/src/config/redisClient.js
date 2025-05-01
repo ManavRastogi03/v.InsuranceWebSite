@@ -1,8 +1,10 @@
 import { createClient } from "redis";
 
-const redisClient = createClient();
+// ✅ Use your Upstash Redis URL (set it in an env variable)
+const redisClient = createClient({
+  url: process.env.REDIS_URL, 
+});
 
-// 🛠️ Connect to Redis
 redisClient.connect()
   .then(() => console.log("🔥 Redis Connected"))
   .catch((err) => console.error("❌ Redis Connection Error:", err));
@@ -10,5 +12,3 @@ redisClient.connect()
 redisClient.on("error", (err) => console.error("❌ Redis Error:", err));
 
 export default redisClient;
-// const redisClient = null;
-// export default redisClient;
