@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../Component/ui/Input";
 import { addInsuranceCompany, getUnassignedInsurancePlans } from "../../../api/api";
 import Button from "../../Component/ui/Button";
-import Loader from "../../../Component/Loader/Loader.jsx"; // adjust path if needed
+import Loader from "../../../Component/Loader/Loader.jsx"; 
 
 
 const AddCompany = () => {
@@ -16,7 +16,7 @@ const AddCompany = () => {
     plan: "",
     customPlan: "",
   });
-  const [availablePlans, setAvailablePlans] = useState([]); // 🎯 New State for available plans
+  const [availablePlans, setAvailablePlans] = useState([]); //  New State for available plans
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -75,16 +75,16 @@ const AddCompany = () => {
     </div>
   ) : (
     <>
-      {/* ✨ Title */}
+      {/*  Title */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-black">Add New Insurance Company</h2>
         <button onClick={() => navigate("/admin/companies")} className="text-gray-500 hover:text-black">✖</button>
       </div>
 
-      {/* 📋 Form Start */}
+      {/*  Form Start */}
       <form onSubmit={handleSubmit} className="space-y-4">
         
-        {/* 🏢 Company Name */}
+        {/* Company Name */}
         <div>
           <h3 className="text-md font-medium mb-1 text-black">Company Name</h3>
           <Input
@@ -97,7 +97,7 @@ const AddCompany = () => {
           />
         </div>
 
-        {/* 🖼️ Logo Upload */}
+       
         <div>
           <h3 className="text-md font-medium mb-1 text-black">Company Logo (Upload Image)</h3>
           <input 

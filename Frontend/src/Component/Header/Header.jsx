@@ -28,6 +28,8 @@ export default function Header() {
     return () => window.removeEventListener("storage", checkAuth);
   }, []);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const role = user?.role?.toLowerCase(); // safely access role
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("profilePic");
@@ -142,14 +144,11 @@ export default function Header() {
           <div className="lg:ml-auto flex items-center space-x-4">
             {isAuthenticated ? (
               <>
-                <Link
-                  to={
-                    localStorage.getItem("role") === "admin"
-                      ? "/admin/dashboard"
-                      : "/user/dashboard"
-                  }
-                  className="flex items-center space-x-2"
-                >
+
+              <Link
+                to={role === "admin" ? "/admin/dashboard" : "/user/dashboard"}
+                className="flex items-center space-x-2"
+              >
                   <img
                     src={profilePic}
                     alt="Profile"

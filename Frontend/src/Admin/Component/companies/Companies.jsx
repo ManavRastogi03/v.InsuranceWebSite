@@ -4,7 +4,7 @@ import { getCompanies, deleteInsuranceCompany } from "../../../api/api.js";
 import Input from "../ui/Input.jsx";
 import Button from "../ui/Button.jsx";
 import CompanyTable from "../CompanyTable.jsx";
-import Loader from "../../../Component/Loader/Loader.jsx"; // ✅ Import loader
+import Loader from "../../../Component/Loader/Loader.jsx"; 
 
 const Companies = () => {
   const navigate = useNavigate();
